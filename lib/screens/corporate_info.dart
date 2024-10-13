@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_register.dart';
 import 'package:flutter_application_1/screens/search.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/bottom_loading.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
@@ -12,6 +11,8 @@ import 'package:flutter_application_1/widgets/corporate_info/corporate_comments.
 import 'package:flutter_application_1/widgets/corporate_info/corporate_bar_chart.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+const String location = "lib/screens/corporate_info.dart";
 
 class CorporateInfoScreen extends StatelessWidget {
   CorporateInfoScreen({super.key, required this.company});
@@ -21,7 +22,6 @@ class CorporateInfoScreen extends StatelessWidget {
 
   void initScreen() {
     companyInfoProvider.getInitItems(company.id);
-    log('CorporateInfoScreen initScreen ${company.toJson()} ${company.homepage} ${company.location}');
   }
 
   void openBrowser(String address) async {
@@ -29,7 +29,7 @@ class CorporateInfoScreen extends StatelessWidget {
       final url = Uri.parse(address);
       await launchUrl(url);
     } catch (e) {
-      log('location $e');
+      writeLogs(location, e.toString());
       CustomSnackbar(
         title: "errorText".tr,
         message: "wrongLocationInformation".tr,

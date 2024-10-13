@@ -1,14 +1,16 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/models/collections/company_rating.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/util.dart';
 import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
+
+const String location = "lib/providers/company_info.dart";
 
 class CompanyInfoProvider extends GetxController {
   Rx<CompanyRating> companyRating = CompanyRating(
@@ -39,8 +41,6 @@ class CompanyInfoProvider extends GetxController {
 
   void getInitItems(String companyID) => WidgetsBinding.instance.addPostFrameCallback((_) async {
         try {
-          log('CompanyInfoProvider getAllItems');
-
           isInitItemLoading.value = true;
           comments.clear();
 
@@ -63,7 +63,7 @@ class CompanyInfoProvider extends GetxController {
             comments.add(CompanyComment.fromMap(item));
           }
         } catch (e) {
-          log(e.toString());
+          writeLogs(location, e.toString());
         } finally {
           isInitItemLoading.value = false;
         }
@@ -72,7 +72,6 @@ class CompanyInfoProvider extends GetxController {
   void moreCommentDataLoad() async {
     try {
       if (isAppendItemLoading.value || comments.length / perPage.value < page.value) return;
-      log('CompanyInfoProvider moreCommentDataLoad');
       isAppendItemLoading.value = true;
       page.value += 1;
 
@@ -85,10 +84,8 @@ class CompanyInfoProvider extends GetxController {
       for (final item in comment.items) {
         comments.add(CompanyComment.fromMap(item));
       }
-
-      log('CompanyInfoProvider moreCommentDataLoad ${comments.length}');
     } catch (e) {
-      log(e.toString());
+      writeLogs(location, e.toString());
     } finally {
       isAppendItemLoading.value = false;
     }

@@ -5,9 +5,12 @@ import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
+
+const String location = "lib/screens/corporate_register.dart";
 
 class CorporateRegister extends StatelessWidget {
   CorporateRegister({super.key});
@@ -70,6 +73,7 @@ class CorporateRegister extends StatelessWidget {
       await registerCompany(company);
       Get.offAll(() => const SearchScreen());
     } catch (e) {
+      writeLogs(location, e.toString());
       log("error : ${e.toString()}");
       CustomSnackbar(
         title: "errorText".tr,

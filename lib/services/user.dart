@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter_application_1/models/localdata.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:hive/hive.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:uuid/uuid.dart';
+
+const String location = "lib/services/user.dart";
 
 Future<void> createUser() async {
   try {
@@ -17,6 +20,7 @@ Future<void> createUser() async {
     final localdata = Localdata(uuid: record.id, name: uuid);
     box.put(LOCAL_DATA, localdata);
   } catch (e) {
+    writeLogs(location, e.toString());
     log("$e");
     rethrow;
   }

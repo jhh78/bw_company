@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/providers/systems.dart';
@@ -90,7 +88,6 @@ class SearchInputForm extends StatelessWidget {
         );
       },
       onSelected: (item) {
-        log(item.name);
         _searchController.text = item.name;
         _searchScreenProvider.filterSearchItems(item.name);
         _systemsProvider.formValidate['keyword'] = true;

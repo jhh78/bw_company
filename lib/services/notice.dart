@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/util.dart';
 import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
+
+const String location = "lib/services/notice.dart";
 
 Future<RecordModel> getNoticeData(String type) async {
   try {
@@ -21,6 +24,8 @@ Future<RecordModel> getNoticeData(String type) async {
           'type="$type" && lang="$languageCode"',
         );
   } catch (e) {
+    writeLogs(location, e.toString());
+    log(e.toString());
     rethrow;
   }
 }

@@ -1,11 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+
+const String location = "lib/screens/help.dart";
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
@@ -27,6 +30,7 @@ class _HelpScreenState extends State<HelpScreen> {
         _isReady = true;
       });
     } catch (e) {
+      writeLogs(location, e.toString());
       log(e.toString());
       CustomSnackbar(
         title: "errorText".tr,

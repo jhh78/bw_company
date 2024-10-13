@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/screens/appinfo.dart';
 import 'package:flutter_application_1/screens/policy.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,8 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pocketbase/pocketbase.dart';
+
+const String location = "lib/screens/intro.dart";
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -42,6 +45,7 @@ class IntroScreen extends StatelessWidget {
         );
       }
     } catch (e) {
+      writeLogs(location, e.toString());
       log('error: $e');
       CustomSnackbar(
         title: "maintenance".tr,

@@ -12,8 +12,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:upgrader/upgrader.dart';
 
 ///
-/// TODO : 결제달기
-///
 /// TODO : 회사 삭제
 /// TODO : 회사 수정
 ///

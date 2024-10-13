@@ -1,16 +1,17 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/services/company.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_application_1/widgets/register/rating_input_form.dart';
 import 'package:flutter_application_1/widgets/register/custom_text_input_field.dart';
 import 'package:get/get.dart';
+
+const String location = "lib/screens/comment_register.dart";
 
 class CommentRegister extends StatelessWidget {
   CommentRegister({super.key, required this.company});
@@ -98,7 +99,7 @@ class CommentRegister extends StatelessWidget {
         transition: Transition.rightToLeft,
       );
     } catch (e) {
-      log("$e");
+      writeLogs(location, e.toString());
 
       CustomSnackbar(
         title: "errorText".tr,

@@ -1,0 +1,86 @@
+import 'package:flutter_application_1/models/collections/company.dart';
+import 'package:flutter_application_1/models/search_screen_model.dart';
+import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/utils/util.dart';
+import 'package:get/get.dart';
+import 'package:pocketbase/pocketbase.dart';
+
+class SearchScreenProvider extends GetxController {
+  RxList<SearchScreenModel> searchList = <SearchScreenModel>[].obs;
+  List<SearchScreenModel> oriSearchList = <SearchScreenModel>[];
+  RxList<Company> companyList = <Company>[].obs;
+
+  RxInt page = 1.obs;
+  RxInt perPage = 15.obs;
+  RxBool isAppendItemLoading = false.obs;
+  RxBool isInitItemLoading = false.obs;
+  RxBool isCompanySearchLoading = false.obs;
+
+  Future<void> getAutoCompleatFieldCompanyList() async {
+    final pb = PocketBase(API_URL);
+    final record = await pb.collection("companyNameAutoCompleat").getFullList();
+
+    for (var item in record) {
+      companyList.add(Company.fromRecordModel(item));
+    }
+  }
+
+  Future<void> getFirstItems() async {
+    searchList.clear();
+    await process();
+  }
+
+  Future<void> readyForSearchScreen() async {
+    isInitItemLoading.value = true;
+
+    await delayScreen();
+
+    searchList.clear();
+    companyList.clear();
+
+    final futures = <Future>[
+      getAutoCompleatFieldCompanyList(),
+      getFirstItems(),
+    ];
+
+    await Future.wait(futures);
+    isInitItemLoading.value = false;
+  }
+
+  void moreDataLoad() async {
+    if (isAppendItemLoading.value || searchList.length / perPage.value < page.value) return;
+
+    isAppendItemLoading.value = true;
+    page.value += 1;
+
+    await delayScreen();
+    await process();
+
+    isAppendItemLoading.value = false;
+  }
+
+  Future<void> process() async {
+    final pb = PocketBase(API_URL);
+    final resultList = await pb.collection('searchScreenCompanyList').getList(
+          page: page.value,
+          perPage: perPage.value,
+        );
+
+    // 반복문을 사용하여 resultList의 items를 searchList에 추가
+    for (final item in resultList.items) {
+      searchList.add(SearchScreenModel.fromJson(item));
+    }
+
+    oriSearchList = List.from(searchList);
+  }
+
+  void filterSearchItems(String keyword) {
+    if (keyword.isNotEmpty) {
+      searchList.value = oriSearchList.where((item) => item.company.name.contains(keyword)).toList().obs;
+    }
+  }
+
+  void resetSearchItems() {
+    searchList.value = List.from(oriSearchList);
+  }
+}

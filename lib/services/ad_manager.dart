@@ -2,10 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+const String location = "lib/services/ad_manager.dart";
 
 class AdManager {
   InterstitialAd? _interstitialAd;
@@ -16,9 +19,9 @@ class AdManager {
 
   String getADUnitId() {
     if (Platform.isAndroid) {
-      return kReleaseMode ? "ca-app-pub-9674517651101637/1649297703" : "ca-app-pub-3940256099942544/5224354917";
+      return kReleaseMode ? "ca-app-pub-9674517651101637/4032962043" : "ca-app-pub-3940256099942544/5224354917";
     } else if (Platform.isIOS) {
-      return kReleaseMode ? "ca-app-pub-9674517651101637/4725282528" : "ca-app-pub-3940256099942544/1712485313";
+      return kReleaseMode ? "ca-app-pub-9674517651101637/5809078146" : "ca-app-pub-3940256099942544/1712485313";
     }
 
     throw Exception("Unsupported platform");
@@ -35,7 +38,7 @@ class AdManager {
           log('Ad loaded.');
         },
         onAdFailedToLoad: (error) {
-          log('Ad failed to load: $error');
+          writeLogs(location, error.toString());
           _interstitialAd = null;
         },
       ),
@@ -52,6 +55,7 @@ class AdManager {
       },
       onAdFailedToShowFullScreenContent: (ad, err) {
         log('Ad failed to show fullscreen content: $err');
+        writeLogs(location, err.toString());
         ad.dispose();
         _interstitialAd = null;
         loadAd(); // 광고 객체를 다시 생성합니다.

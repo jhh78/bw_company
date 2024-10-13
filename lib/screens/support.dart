@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
 import 'package:flutter_application_1/services/ad_manager.dart';
+import 'package:flutter_application_1/services/purchase_manager.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 const String location = "lib/screens/support.dart";
 
@@ -23,72 +21,7 @@ class _SupportScreenState extends State<SupportScreen> {
   bool _isReady = false;
   String _text = "";
   final AdManager adManager = AdManager();
-  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
-
-  void _initializeInAppPurchase() {
-    final purchaseUpdated = _inAppPurchase.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      writeLogs(location, error.toString());
-      // Handle error here.
-      CustomSnackbar(
-        title: "errorText".tr,
-        message: "unknownExcetipn".tr,
-        status: ObserveSnackbarStatus.ERROR,
-      ).showSnackbar();
-    });
-  }
-
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    for (var purchaseDetails in purchaseDetailsList) {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        // Handle pending state
-      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        // Handle purchased state
-        if (purchaseDetails.pendingCompletePurchase) {
-          InAppPurchase.instance.completePurchase(purchaseDetails);
-        }
-      } else if (purchaseDetails.status == PurchaseStatus.error) {
-        // Handle error state
-        CustomSnackbar(
-          title: "errorText".tr,
-          message: purchaseDetails.error!.message,
-          status: ObserveSnackbarStatus.ERROR,
-        ).showSnackbar();
-      }
-    }
-  }
-
-  void _buyProduct() async {
-    try {
-      final bool available = await _inAppPurchase.isAvailable();
-      if (!available) {
-        throw Exception("In-app purchases are not available");
-      }
-
-      const Set<String> kIds = {'100en'}; // 실제 제품 ID로 변경하세요.
-      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(kIds);
-      if (response.notFoundIDs.isNotEmpty) {
-        throw Exception("Product not found: ${response.notFoundIDs.join(", ")}");
-      }
-
-      final ProductDetails productDetails = response.productDetails.first;
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
-      _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
-    } catch (error) {
-      writeLogs(location, error.toString());
-
-      CustomSnackbar(
-        title: "errorText".tr,
-        message: "unknownExcetipn".tr,
-        status: ObserveSnackbarStatus.ERROR,
-      ).showSnackbar();
-    }
-  }
+  final PurchaseManager _purchaseManager = PurchaseManager();
 
   void _getNoticeData() async {
     try {
@@ -111,14 +44,14 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeInAppPurchase();
+    _purchaseManager.initialize();
     _getNoticeData();
   }
 
   @override
   void dispose() {
+    _purchaseManager.dispose();
     super.dispose();
-    _subscription.cancel();
   }
 
   Widget renderContents() {
@@ -159,7 +92,7 @@ class _SupportScreenState extends State<SupportScreen> {
                   child: Text('viewAD'.tr),
                 ),
                 ElevatedButton(
-                  onPressed: _buyProduct,
+                  onPressed: _purchaseManager.buyProduct,
                   child: Text('donate'.tr),
                 ),
               ],

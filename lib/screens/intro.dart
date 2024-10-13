@@ -45,7 +45,6 @@ class IntroScreen extends StatelessWidget {
         );
       }
     } catch (e) {
-      writeLogs(location, e.toString());
       log('error: $e');
       CustomSnackbar(
         title: "maintenance".tr,

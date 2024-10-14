@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/screens/appinfo.dart';
 import 'package:flutter_application_1/screens/policy.dart';
-import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_svg/svg.dart';

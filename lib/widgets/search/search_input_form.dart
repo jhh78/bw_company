@@ -1,13 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/providers/systems.dart';
-import 'package:flutter_application_1/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class SearchInputForm extends StatelessWidget {
   SearchInputForm({

@@ -2,14 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/appinfo.dart';
-import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-const String location = "lib/screens/policy.dart";
 
 class PolicyScreen extends StatefulWidget {
   const PolicyScreen({super.key});
@@ -45,11 +42,9 @@ class PolicyScreenState extends State<PolicyScreen> {
             });
           },
           onHttpError: (HttpResponseError error) {
-            writeLogs(location, error.toString());
             log("HTTP Error: ${error.toString()}");
           },
           onWebResourceError: (WebResourceError error) {
-            writeLogs(location, error.toString());
             log("Web Resource Error: ${error.toString()}");
           },
           onNavigationRequest: (NavigationRequest request) {

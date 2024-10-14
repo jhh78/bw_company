@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/providers/systems.dart';
-import 'package:flutter_application_1/screens/corporate_register.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class SearchInputForm extends StatelessWidget {
   SearchInputForm({
@@ -11,37 +15,6 @@ class SearchInputForm extends StatelessWidget {
   });
   final SystemsProvider _systemsProvider = Get.put(SystemsProvider());
   final SearchScreenProvider _searchScreenProvider = Get.put(SearchScreenProvider());
-  final TextEditingController _searchController = TextEditingController();
-
-  void initScreen() {
-    _systemsProvider.formValidate['keyword'] = true;
-  }
-
-  Widget renderCompanyAddButton() {
-    if (_systemsProvider.formValidate['keyword'] == true) {
-      return Container();
-    }
-
-    return Container(
-      padding: const EdgeInsets.only(top: 20),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue, // 텍스트 색상
-        ),
-        onPressed: () {
-          Get.to(
-            () => CorporateRegister(),
-            arguments: {
-              'keyword': _searchController.text,
-            },
-            transition: Transition.rightToLeft,
-          );
-        },
-        child: Text('registerCompanyButton'.tr),
-      ),
-    );
-  }
 
   Widget renderTextField(BuildContext context) {
     if (_searchScreenProvider.isInitItemLoading.value) {
@@ -49,14 +22,23 @@ class SearchInputForm extends StatelessWidget {
     }
 
     return TypeAheadField(
-      controller: _searchController,
+      controller: _searchScreenProvider.searchController.value,
       loadingBuilder: (context) => const CircularProgressIndicator(),
       animationDuration: const Duration(milliseconds: 100),
       emptyBuilder: (context) => Container(
         height: 0,
       ),
       suggestionsCallback: (search) async {
-        return _searchScreenProvider.companyList.where((item) => item.name.contains(search)).toList();
+        return _searchScreenProvider.findCompanyList(search);
+      },
+      onSelected: (item) async {
+        final findSearchItem = _searchScreenProvider.findLoadedItemList(item.name);
+        if (findSearchItem.isNotEmpty) {
+          _searchScreenProvider.filterSearchItems(item.name);
+          return;
+        }
+
+        _searchScreenProvider.searchKeywordItem(item.name);
       },
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.3,
@@ -71,15 +53,7 @@ class SearchInputForm extends StatelessWidget {
             border: const OutlineInputBorder(),
             labelText: 'searchCompanyHintText'.tr,
           ),
-          onChanged: (value) {
-            if (value.isEmpty) {
-              _searchScreenProvider.resetSearchItems();
-              _systemsProvider.formValidate['keyword'] = true;
-            } else {
-              _searchScreenProvider.filterSearchItems(value);
-              _systemsProvider.formValidate['keyword'] = false;
-            }
-          },
+          onChanged: handleTextFieldOnchange,
         );
       },
       itemBuilder: (context, item) {
@@ -87,22 +61,30 @@ class SearchInputForm extends StatelessWidget {
           title: Text(item.name),
         );
       },
-      onSelected: (item) {
-        _searchController.text = item.name;
-        _searchScreenProvider.filterSearchItems(item.name);
-        _systemsProvider.formValidate['keyword'] = true;
-      },
     );
+  }
+
+  void handleTextFieldOnchange(value) async {
+    _systemsProvider.formValidate['keyword'] = true;
+
+    if (value.isEmpty) {
+      _searchScreenProvider.resetSearchItems();
+      return;
+    }
+
+    final findItem = _searchScreenProvider.findCompanyList(value);
+    if (findItem.isEmpty) {
+      _systemsProvider.formValidate['keyword'] = false;
+      return;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    initScreen();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Obx(() => renderTextField(context)),
-        Obx(() => renderCompanyAddButton()),
       ],
     );
   }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
+import 'package:flutter_application_1/screens/corporate_register.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/bottom_loading.dart';
+import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_application_1/widgets/common/side_menu.dart';
 import 'package:flutter_application_1/widgets/search/list_contents.dart';
 import 'package:flutter_application_1/widgets/search/search_input_form.dart';
@@ -13,7 +16,7 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => SearchScreenState();
 }
 
-class SearchScreenState extends State<SearchScreen> {
+class SearchScreenState extends State<SearchScreen> with SingleTickerProviderStateMixin {
   final SearchScreenProvider _searchScreenProvider = Get.put(SearchScreenProvider());
   bool _isInit = false;
 
@@ -47,6 +50,27 @@ class SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  void handleMoveRegisterScreen() {
+    final hasItem = _searchScreenProvider.checkCompanyName(_searchScreenProvider.searchController.value.text);
+    if (hasItem) {
+      CustomSnackbar(
+        title: 'info'.tr,
+        message: "registeredItems".tr,
+        status: ObserveSnackbarStatus.INFO,
+      ).showSnackbar();
+
+      return;
+    }
+
+    Get.to(
+      () => CorporateRegister(),
+      arguments: {
+        'keyword': _searchScreenProvider.searchController.value.text,
+      },
+      transition: Transition.rightToLeft,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -56,6 +80,19 @@ class SearchScreenState extends State<SearchScreen> {
           backgroundColor: Colors.white,
           title: Text("searchListTitle".tr),
           centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(
+                  Icons.add_box_outlined,
+                  color: Colors.blue,
+                  size: 35,
+                ),
+                onPressed: handleMoveRegisterScreen,
+              ),
+            ),
+          ],
         ),
         drawer: const SideMenu(),
         body: Container(

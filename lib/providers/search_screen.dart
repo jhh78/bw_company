@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/utils/constants.dart';
@@ -9,6 +10,7 @@ class SearchScreenProvider extends GetxController {
   RxList<SearchScreenModel> searchList = <SearchScreenModel>[].obs;
   List<SearchScreenModel> oriSearchList = <SearchScreenModel>[];
   RxList<Company> companyList = <Company>[].obs;
+  Rx<TextEditingController> searchController = TextEditingController().obs;
 
   RxInt page = 1.obs;
   RxInt perPage = 15.obs;
@@ -83,4 +85,22 @@ class SearchScreenProvider extends GetxController {
   void resetSearchItems() {
     searchList.value = List.from(oriSearchList);
   }
+
+  void setSearchListValue(List<SearchScreenModel> list) {
+    searchList.value = list;
+  }
+
+  void searchKeywordItem(String keyword) async {
+    final pb = PocketBase(API_URL);
+    final records = await pb.collection('company').getFullList(
+          filter: "name='$keyword'",
+        );
+    searchList.value = records.map((e) => SearchScreenModel.fromJson(e)).toList();
+  }
+
+  List<Company> findCompanyList(String search) => companyList.where((item) => item.name.contains(search)).toList();
+
+  List<SearchScreenModel> findLoadedItemList(String search) => oriSearchList.where((item) => item.company.name.contains(search)).toList();
+
+  bool checkCompanyName(String search) => companyList.any((item) => item.name == search);
 }

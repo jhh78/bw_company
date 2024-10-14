@@ -55,6 +55,7 @@ class Languages extends Translations {
           'errorText': "에러",
           'unknownExcetipn': "알수없는 오류가 발생하였습니다.",
           'needRequiredField': "필수항목을 입력해 주세요",
+          'registeredItems': "이미 등록된 항목입니다.",
         },
         'ja_JP': {
           'maintenance': "サーバーメンテナンス中です。",
@@ -108,6 +109,7 @@ class Languages extends Translations {
           'errorText': "エラー",
           'unknownExcetipn': "不明なエラーが発生しました。",
           'needRequiredField': "必須項目を入力してください",
+          'registeredItems': "すでに登録されたアイテムです。",
         },
         'en_US': {
           'maintenance': "Server maintenance is in progress.",
@@ -161,6 +163,7 @@ class Languages extends Translations {
           'errorText': "Error",
           'unknownExcetipn': "An unknown error has occurred.",
           'needRequiredField': "Please enter the required field",
+          'registeredItems': "This item is already registered.",
         },
       };
 }

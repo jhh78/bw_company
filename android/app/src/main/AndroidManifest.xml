@@ -2,7 +2,7 @@
     <android:uses-permission android:name="android.permission.INTERNET"/>
     <android:uses-permission android:name="android.Manifest.permission.READ_PRIVILEGED_PHONE_STATE"/>
     <application
-        android:label="black_company"
+        android:label="@string/app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

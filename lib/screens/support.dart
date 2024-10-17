@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
-import 'package:flutter_application_1/services/ad_manager.dart';
-import 'package:flutter_application_1/services/purchase_manager.dart';
+import 'package:flutter_application_1/services/vender/ad_manager.dart';
+import 'package:flutter_application_1/services/vender/payment/payment_manager.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -21,7 +23,7 @@ class _SupportScreenState extends State<SupportScreen> {
   bool _isReady = false;
   String _text = "";
   final AdManager adManager = AdManager();
-  final PurchaseManager _purchaseManager = PurchaseManager();
+  final PaymentManager _purchaseManager = PaymentManager();
 
   void _getNoticeData() async {
     try {
@@ -44,7 +46,6 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   void initState() {
     super.initState();
-    _purchaseManager.initialize();
     _getNoticeData();
   }
 
@@ -92,7 +93,18 @@ class _SupportScreenState extends State<SupportScreen> {
                   child: Text('viewAD'.tr),
                 ),
                 ElevatedButton(
-                  onPressed: _purchaseManager.buyProduct,
+                  onPressed: () => {
+                    if (Platform.isAndroid)
+                      {_purchaseManager.purchase(0)}
+                    else
+                      {
+                        CustomSnackbar(
+                          title: "info".tr,
+                          message: "notSupport".tr,
+                          status: ObserveSnackbarStatus.INFO,
+                        ).showSnackbar()
+                      }
+                  },
                   child: Text('donate'.tr),
                 ),
               ],

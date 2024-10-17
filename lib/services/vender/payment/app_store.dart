@@ -1,33 +1,24 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_application_1/services/exception.dart';
+import 'package:flutter_application_1/services/vender/payment/store_manager.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
-const String location = "lib/services/purchase_manager.dart";
+const String location = "lib/services/vender/app_store.dart";
 
 // 실제 제품 ID로 변경
 const Set<String> kIds = {'100en'};
 
-class PurchaseManager {
+class AppStoreManager extends StoreManager {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
+  late List<ProductDetails> _products;
 
-  void initialize() {
-    final purchaseUpdated = _inAppPurchase.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      writeLogs(location, error.toString());
-      _showSnackbar();
-    });
-  }
-
-  Future<void> buyProduct() async {
+  @override
+  Future<void> loadProducts() async {
     try {
       final bool available = await _inAppPurchase.isAvailable();
       if (!available) {
@@ -39,16 +30,15 @@ class PurchaseManager {
         throw Exception("Product not found: ${response.notFoundIDs.join(", ")}");
       }
 
-      final ProductDetails productDetails = response.productDetails.first;
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
-      _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      _products = response.productDetails;
     } catch (error) {
       writeLogs(location, error.toString());
-      _showSnackbar();
+      showSnackbar();
     }
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+  @override
+  void listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     try {
       for (var purchaseDetails in purchaseDetailsList) {
         if (purchaseDetails.status == PurchaseStatus.error) {
@@ -61,15 +51,43 @@ class PurchaseManager {
       }
     } catch (error) {
       writeLogs(location, error.toString());
-      _showSnackbar();
+      showSnackbar();
     }
   }
 
+  @override
+  void initialize() async {
+    final purchaseUpdated = _inAppPurchase.purchaseStream;
+    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      writeLogs(location, error.toString());
+      showSnackbar();
+    });
+    await loadProducts();
+  }
+
+  @override
   void dispose() {
     _subscription.cancel();
   }
 
-  void _showSnackbar() {
+  @override
+  Future<void> buyProduct(int index) async {
+    try {
+      final ProductDetails productDetails = _products[index];
+      final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
+      _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+    } catch (error) {
+      writeLogs(location, error.toString());
+      showSnackbar();
+    }
+  }
+
+  @override
+  void showSnackbar() {
     CustomSnackbar(
       title: "errorText".tr,
       message: "unknownExcetipn".tr,

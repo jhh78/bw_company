@@ -7,6 +7,7 @@ import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/utils/util.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
 
@@ -49,11 +50,11 @@ class CorporateRegister extends StatelessWidget {
     try {
       systemsProvider.formValidate.clear();
 
-      if (_companyHomepageController.text.isEmpty) {
+      if (_companyHomepageController.text.isEmpty || !isValidUrl(_companyHomepageController.text)) {
         systemsProvider.formValidate['companyHomepage'] = true;
       }
 
-      if (_companyLocationController.text.isEmpty) {
+      if (_companyLocationController.text.isEmpty || !isValidGoogleMapUrl(_companyLocationController.text)) {
         systemsProvider.formValidate['companyLocation'] = true;
       }
 

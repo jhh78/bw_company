@@ -17,6 +17,7 @@ class SearchScreenProvider extends GetxController {
   RxBool isAppendItemLoading = false.obs;
   RxBool isInitItemLoading = false.obs;
   RxBool isCompanySearchLoading = false.obs;
+  RxBool isDisplayCompanyAddButton = false.obs;
 
   Future<void> getAutoCompleatFieldCompanyList() async {
     final pb = PocketBase(API_URL);

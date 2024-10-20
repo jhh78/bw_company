@@ -24,7 +24,9 @@ class SearchInputForm extends StatelessWidget {
         height: 0,
       ),
       suggestionsCallback: (search) async {
-        return _searchScreenProvider.findCompanyList(search);
+        final findItem = _searchScreenProvider.findCompanyList(search);
+        _searchScreenProvider.isDisplayCompanyAddButton.value = findItem.isEmpty;
+        return findItem;
       },
       onSelected: (item) async {
         final findSearchItem = _searchScreenProvider.findLoadedItemList(item.name);

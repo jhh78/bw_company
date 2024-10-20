@@ -81,17 +81,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
           title: Text("searchListTitle".tr),
           centerTitle: true,
           actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.add_box_outlined,
-                  color: Colors.blue,
-                  size: 35,
-                ),
-                onPressed: handleMoveRegisterScreen,
-              ),
-            ),
+            Obx(() => renderCompanyAddButton()),
           ],
         ),
         drawer: const SideMenu(),
@@ -100,6 +90,24 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
           color: Colors.white,
           child: renderSearchScreen(),
         ),
+      ),
+    );
+  }
+
+  Widget renderCompanyAddButton() {
+    if (!_searchScreenProvider.isDisplayCompanyAddButton.value) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: IconButton(
+        icon: const Icon(
+          Icons.add_home_work_outlined,
+          color: Colors.blue,
+          size: 35,
+        ),
+        onPressed: handleMoveRegisterScreen,
       ),
     );
   }

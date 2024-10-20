@@ -56,6 +56,8 @@ class Languages extends Translations {
           'unknownExcetipn': "알수없는 오류가 발생하였습니다.",
           'needRequiredField': "필수항목을 입력해 주세요",
           'registeredItems': "이미 등록된 항목입니다.",
+          'adLoadFailed': "광고 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.",
+          'productLoadFailed': "상품 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.",
         },
         'ja_JP': {
           'maintenance': "サーバーメンテナンス中です。",
@@ -110,6 +112,8 @@ class Languages extends Translations {
           'unknownExcetipn': "不明なエラーが発生しました。",
           'needRequiredField': "必須項目を入力してください",
           'registeredItems': "すでに登録されたアイテムです。",
+          'adLoadFailed': "広告のロードに失敗しました。\nしばらくしてから再度お試しください。",
+          'productLoadFailed': "商品のロードに失敗しました。\nしばらくしてから再度お試しください。",
         },
         'en_US': {
           'maintenance': "Server maintenance is in progress.",
@@ -164,6 +168,8 @@ class Languages extends Translations {
           'unknownExcetipn': "An unknown error has occurred.",
           'needRequiredField': "Please enter the required field",
           'registeredItems': "This item is already registered.",
+          'adLoadFailed': "Failed to load ad.\nPlease try again later.",
+          'productLoadFailed': "Failed to load product.\nPlease try again later.",
         },
       };
 }

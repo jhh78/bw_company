@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
-import 'package:flutter_application_1/services/vender/ad_manager.dart';
-import 'package:flutter_application_1/services/vender/payment/payment_manager.dart';
+import 'package:flutter_application_1/services/vender/ad.dart';
+import 'package:flutter_application_1/services/vender/payment.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -55,6 +53,32 @@ class _SupportScreenState extends State<SupportScreen> {
     super.dispose();
   }
 
+  _buyProduct(int productIndex) async {
+    try {
+      await _purchaseManager.buyProduct(productIndex);
+    } catch (e) {
+      writeLogs(location, e.toString());
+      CustomSnackbar(
+        title: "errorText".tr,
+        message: "productLoadFailed".tr,
+        status: ObserveSnackbarStatus.ERROR,
+      ).showSnackbar();
+    }
+  }
+
+  _showAd() async {
+    try {
+      await adManager.showAd();
+    } catch (e) {
+      writeLogs(location, e.toString());
+      CustomSnackbar(
+        title: "errorText".tr,
+        message: "adLoadFailed".tr,
+        status: ObserveSnackbarStatus.ERROR,
+      ).showSnackbar();
+    }
+  }
+
   Widget renderContents() {
     if (!_isReady) {
       return const Center(
@@ -89,22 +113,11 @@ class _SupportScreenState extends State<SupportScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: adManager.showAd,
+                  onPressed: _showAd,
                   child: Text('viewAD'.tr),
                 ),
                 ElevatedButton(
-                  onPressed: () => {
-                    if (Platform.isAndroid)
-                      {_purchaseManager.purchase(0)}
-                    else
-                      {
-                        CustomSnackbar(
-                          title: "info".tr,
-                          message: "notSupport".tr,
-                          status: ObserveSnackbarStatus.INFO,
-                        ).showSnackbar()
-                      }
-                  },
+                  onPressed: () => _buyProduct(0),
                   child: Text('donate'.tr),
                 ),
               ],

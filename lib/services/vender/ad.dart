@@ -3,9 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_application_1/services/exception.dart';
-import 'package:flutter_application_1/utils/constants.dart';
-import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
-import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 const String location = "lib/services/ad_manager.dart";
@@ -27,7 +24,7 @@ class AdManager {
     throw Exception("Unsupported platform");
   }
 
-  void loadAd() {
+  void loadAd() async {
     InterstitialAd.load(
       adUnitId: getADUnitId(),
       request: const AdRequest(),
@@ -40,6 +37,7 @@ class AdManager {
         onAdFailedToLoad: (error) {
           writeLogs(location, error.toString());
           _interstitialAd = null;
+          throw Exception("Failed to load an ad: $error");
         },
       ),
     );
@@ -72,16 +70,10 @@ class AdManager {
     );
   }
 
-  void showAd() async {
+  Future showAd() async {
     if (_interstitialAd == null) {
-      CustomSnackbar(
-        message: "adNotLoaded".tr,
-        title: 'errorText'.tr,
-        status: ObserveSnackbarStatus.ERROR,
-      ).showSnackbar();
-
       loadAd();
-      return;
+      throw Exception("Ad not loaded");
     }
 
     _interstitialAd!.show();

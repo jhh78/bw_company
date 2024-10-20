@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +8,6 @@ class CustomSnackbar {
   final String title;
   final String message;
   final Enum status;
-  final SystemsProvider systemsProvider = Get.put(SystemsProvider());
 
   CustomSnackbar({
     required this.title,
@@ -17,17 +17,6 @@ class CustomSnackbar {
 
   void showSnackbar() {
     Color backgroundColor;
-
-    if (systemsProvider.isModalOpen.value) {
-      // モーダルが開いている場合はスナックバーを表示しない
-      Future.delayed(const Duration(seconds: 3)).then((_) {
-        systemsProvider.isModalOpen.value = false;
-      });
-
-      return;
-    }
-
-    systemsProvider.isModalOpen.value = true;
 
     switch (status) {
       case ObserveSnackbarStatus.INFO:
@@ -54,6 +43,9 @@ class CustomSnackbar {
       backgroundColor: backgroundColor,
       colorText: Colors.white,
       margin: const EdgeInsets.all(10),
+      snackbarStatus: (status) {
+        log('Snackbar status: $status');
+      },
     );
   }
 }

@@ -22,6 +22,22 @@ class IntroScreen extends StatelessWidget {
     return packageInfo.version;
   }
 
+  void movePolicyScreen() {
+    Get.offAll(
+      () => const PolicyScreen(),
+      transition: Transition.fadeIn,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  void moveAppInfoScreen() {
+    Get.offAll(
+      () => const AppInfoScreen(),
+      transition: Transition.fadeIn,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
   void checkServerStatus() async {
     try {
       Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
@@ -31,18 +47,21 @@ class IntroScreen extends StatelessWidget {
       await pb.collection("connection").getFullList();
 
       if (userData == null) {
-        Get.offAll(
-          () => const PolicyScreen(),
-          transition: Transition.fadeIn,
-          duration: const Duration(seconds: 1),
-        );
-      } else {
-        Get.offAll(
-          () => const AppInfoScreen(),
-          transition: Transition.fadeIn,
-          duration: const Duration(seconds: 1),
-        );
+        movePolicyScreen();
+        return;
       }
+
+      try {
+        // 해당 유저 정보가 있는지 확인
+        await pb.collection('users').getOne(userData.uuid);
+      } catch (e) {
+        log('error: $e');
+        // 존재하지 않으면 policy로 이동
+        movePolicyScreen();
+        return;
+      }
+
+      moveAppInfoScreen();
     } catch (e) {
       log('error: $e');
       CustomSnackbar(

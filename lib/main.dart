@@ -9,7 +9,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
+
+// TODO ::: 회사등록버튼이 표시되는 조건 추가할것
+// TODO ::: 회사등록시 홈페이지 주소 검증 추가할것
+// TODO ::: 회사등록시 구글맵 주소 검증 추가할것
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,12 +23,13 @@ void main() async {
   await dotenv.load(fileName: ".env");
   MobileAds.instance.initialize();
 
-  await Hive.initFlutter();
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
   Hive.registerAdapter(LocaldataAdapter());
 
-  if (!Hive.isBoxOpen(SYSTEM_BOX)) {
-    await Hive.openBox<Localdata>(SYSTEM_BOX);
-  }
+  // Hive 초기화 및 박스 열기
+  await Hive.initFlutter(appDocumentDir.path);
+  await Hive.openBox<Localdata>(SYSTEM_BOX);
   runApp(const MyApp());
 }
 

@@ -57,7 +57,6 @@ class _SupportScreenState extends State<SupportScreen> {
     try {
       await _purchaseManager.buyProduct(productIndex);
     } catch (e) {
-      writeLogs(location, e.toString());
       CustomSnackbar(
         title: "errorText".tr,
         message: "productLoadFailed".tr,
@@ -70,7 +69,6 @@ class _SupportScreenState extends State<SupportScreen> {
     try {
       await adManager.showAd();
     } catch (e) {
-      writeLogs(location, e.toString());
       CustomSnackbar(
         title: "errorText".tr,
         message: "adLoadFailed".tr,

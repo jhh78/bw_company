@@ -22,3 +22,5 @@ final String API_URL = kReleaseMode ? dotenv.env['REAL_API_URL'].toString() : do
 // URL 패턴을 정규식으로 정의합니다.
 const URL_PATTERN = r'^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(:[0-9]{1,5})?(\/.*)?$';
 const GOOGLE_MAP_URL_PATTERN = r'^(https?:\/\/)?(www\.)?(google\.com\/maps|maps\.google\.com|goo\.gl)\/.*$';
+
+const SEARCH_TAG_SEPARATOR = "###";

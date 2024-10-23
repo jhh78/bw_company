@@ -12,6 +12,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
+// TODO ::: 회사 등록시 검색태그 추가기능
+// TODO ::: 댓글 등록시 검색태그 추가기능
+
 // TODO ::: 디자인 약간 손봐야됨
 // TODO ::: 번역검증
 // TODO ::: 공지사항및 고정데이터 추가

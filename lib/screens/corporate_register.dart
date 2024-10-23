@@ -9,6 +9,7 @@ import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/util.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
+import 'package:flutter_application_1/widgets/register/search_tag_input_field.dart';
 import 'package:get/get.dart';
 
 const String location = "lib/screens/corporate_register.dart";
@@ -28,20 +29,15 @@ class CorporateRegister extends StatelessWidget {
       {String? helperText, bool readOnly = false, TextEditingController? controller}) {
     return Obx(() => Container(
           padding: const EdgeInsets.only(bottom: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                readOnly: readOnly,
-                controller: controller,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: label,
-                  errorText: systemsProvider.formValidate[validateKey] == true ? "requiredField".tr : null,
-                  helperText: helperText,
-                ),
-              ),
-            ],
+          child: TextField(
+            readOnly: readOnly,
+            controller: controller,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: label,
+              errorText: systemsProvider.formValidate[validateKey] == true ? "requiredField".tr : null,
+              helperText: helperText,
+            ),
           ),
         ));
   }
@@ -119,6 +115,7 @@ class CorporateRegister extends StatelessWidget {
                 helperText: "registerCompanyScreenNeedCompanyLocationHelpText".tr,
                 controller: _companyLocationController,
               ),
+              const SearchTagInputField(tags: ""),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _registerCompany,

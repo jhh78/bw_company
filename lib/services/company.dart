@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
 import 'package:flutter_application_1/models/localdata.dart';
@@ -32,6 +34,7 @@ Future<void> registerComment(CompanyRegisterFormModel params) async {
 
 Future<void> registerCompany(Company company) async {
   final pb = PocketBase(API_URL);
+  log('registerCompany: ${company.toJson()}');
   final record = await pb.collection('company').create(body: company.toJson());
   company.id = record.id;
 }

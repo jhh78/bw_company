@@ -7,6 +7,7 @@ class Company {
   String? location;
   int thumbUp;
   int thumbDown;
+  String? tags;
 
   Company({
     this.id = '',
@@ -15,6 +16,7 @@ class Company {
     this.location,
     this.thumbUp = 0,
     this.thumbDown = 0,
+    this.tags = '',
   });
 
   factory Company.fromRecordModel(RecordModel record) {
@@ -25,6 +27,7 @@ class Company {
       location: record.data['location'],
       thumbUp: record.data['thumbUp'] ?? 0,
       thumbDown: record.data['thumbDown'] ?? 0,
+      tags: record.data['tags'],
     );
   }
 
@@ -36,6 +39,7 @@ class Company {
       location: json['location'],
       thumbUp: json['thumbUp'] ?? 0,
       thumbDown: json['thumbDown'] ?? 0,
+      tags: json['tags'],
     );
   }
 
@@ -47,6 +51,7 @@ class Company {
       'location': location,
       'thumbUp': thumbUp,
       'thumbDown': thumbDown,
+      'tags': tags,
     };
   }
 }

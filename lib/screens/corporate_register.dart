@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
+import 'package:flutter_application_1/models/search_tag_model.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
@@ -22,6 +23,7 @@ class CorporateRegister extends StatelessWidget {
   final TextEditingController _companyNameController = TextEditingController(text: Get.arguments['keyword']);
   final TextEditingController _companyHomepageController = TextEditingController();
   final TextEditingController _companyLocationController = TextEditingController();
+  final TextEditingController _companyTagsController = TextEditingController();
 
   final Company company = Company();
 
@@ -80,6 +82,10 @@ class CorporateRegister extends StatelessWidget {
     }
   }
 
+  void _changeTagList(List<String> tagList) {
+    company.tags = tagList.join(SEARCH_TAG_SEPARATOR);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +121,7 @@ class CorporateRegister extends StatelessWidget {
                 helperText: "registerCompanyScreenNeedCompanyLocationHelpText".tr,
                 controller: _companyLocationController,
               ),
-              const SearchTagInputField(tags: ""),
+              SearchTagInputField(tags: "", onTagChange: _changeTagList),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _registerCompany,

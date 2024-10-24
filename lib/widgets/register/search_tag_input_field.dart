@@ -2,11 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/search_tag_model.dart';
+import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
 
 class SearchTagInputField extends StatefulWidget {
-  const SearchTagInputField({super.key, required this.tags});
+  const SearchTagInputField({super.key, required this.tags, required this.onTagChange});
   final String tags;
+  final Function(List<String>) onTagChange;
 
   @override
   State<SearchTagInputField> createState() => _SearchTagInputFieldState();
@@ -93,10 +96,20 @@ class _SearchTagInputFieldState extends State<SearchTagInputField> {
 
     return IconButton(
       onPressed: () {
+        if (_tagList.any((e) => e.tagName == _tagController.text)) {
+          CustomSnackbar(
+            title: "errorText".tr,
+            message: "alreadyExistTag".tr,
+            status: ObserveSnackbarStatus.ERROR,
+          ).showSnackbar();
+          return;
+        }
+
         setState(() {
           _tagList.add(SearchTagModel(tagName: _tagController.text, isDelete: true));
           _tagController.clear();
           _isTagFieldEmpty = true;
+          widget.onTagChange(_tagList.map((e) => e.tagName).toList());
         });
       },
       icon: const Icon(

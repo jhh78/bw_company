@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
+import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/services/company.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_application_1/widgets/register/rating_input_form.dart';
 import 'package:flutter_application_1/widgets/register/custom_text_input_field.dart';
+import 'package:flutter_application_1/widgets/register/search_tag_input_field.dart';
 import 'package:get/get.dart';
 
 const String location = "lib/screens/comment_register.dart";
@@ -19,6 +21,7 @@ class CommentRegister extends StatelessWidget {
   final Company company;
 
   final SystemsProvider _validateionProvider = Get.put(SystemsProvider());
+  final CompanyInfoProvider companyInfoProvider = Get.put(CompanyInfoProvider());
   final CompanyRegisterFormModel _companyRegisterModel = CompanyRegisterFormModel();
 
   final TextEditingController _titleController = TextEditingController();
@@ -109,6 +112,10 @@ class CommentRegister extends StatelessWidget {
     }
   }
 
+  void _changeTagList(List<String> tagList) {
+    company.tags = tagList.join(SEARCH_TAG_SEPARATOR);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,33 +142,43 @@ class CommentRegister extends StatelessWidget {
               RatingInputForm(title: "descriptionSalaryWelfare".tr, onRatingUpdate: _salaryWelfareRatingUpdate),
               RatingInputForm(title: "descriptionCompanyCulture".tr, onRatingUpdate: _corporateCultureRatingUpdate),
               RatingInputForm(title: "descriptionManagement".tr, onRatingUpdate: _managementRatingUpdate),
+              Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                child: SearchTagInputField(tags: "", onTagChange: _changeTagList),
+              ),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormTitleHintText".tr,
+                    helperText: "companyRegisterInputFormTitleHintText".tr,
                     controller: _titleController,
                     isValidate: _validateionProvider.formValidate['title'] ?? false,
                   )),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormCareerHintText".tr,
+                    helperText: "companyRegisterInputFormCareerHintText".tr,
                     controller: _careerController,
                     isValidate: _validateionProvider.formValidate['career'] ?? false,
                   )),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormWorkingEnvironmentHintText".tr,
+                    helperText: "companyRegisterInputFormWorkingEnvironmentHintText".tr,
                     controller: _workingEnvironmentController,
                     isValidate: _validateionProvider.formValidate['workingEnvironment'] ?? false,
                   )),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormSalaryWelfareHintText".tr,
+                    helperText: "companyRegisterInputFormSalaryWelfareHintText".tr,
                     controller: _salaryWelfareController,
                     isValidate: _validateionProvider.formValidate['salaryWelfare'] ?? false,
                   )),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormCorporateCultureHintText".tr,
+                    helperText: "companyRegisterInputFormCorporateCultureHintText".tr,
                     controller: _corporateCultureController,
                     isValidate: _validateionProvider.formValidate['corporateCulture'] ?? false,
                   )),
               Obx(() => CustomTextInputField(
                     hintText: "companyRegisterInputFormManagementHintText".tr,
+                    helperText: "companyRegisterInputFormManagementHintText".tr,
                     controller: _managementController,
                     isValidate: _validateionProvider.formValidate['management'] ?? false,
                   )),

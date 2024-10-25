@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomTextInputField extends StatelessWidget {
-  const CustomTextInputField({super.key, required this.hintText, required this.controller, required this.isValidate});
+  const CustomTextInputField({super.key, required this.hintText, required this.controller, required this.isValidate, this.helperText});
 
   final String hintText;
   final TextEditingController controller;
   final bool isValidate;
+  final String? helperText;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class CustomTextInputField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
+          helperText: helperText,
           errorText: isValidate ? "requiredField".tr : null,
           border: const OutlineInputBorder(),
         ),

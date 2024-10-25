@@ -55,6 +55,7 @@ class Languages extends Translations {
 
           // Exception
           'errorText': "에러",
+          'alreadyExistTag': "이미 등록된 태그입니다.",
           'unknownExcetipn': "알수없는 오류가 발생하였습니다.",
           'needRequiredField': "필수항목을 입력해 주세요",
           'registeredItems': "이미 등록된 항목입니다.",
@@ -113,6 +114,7 @@ class Languages extends Translations {
 
           // Exception
           'errorText': "エラー",
+          'alreadyExistTag': "既に登録されたタグです。",
           'unknownExcetipn': "不明なエラーが発生しました。",
           'needRequiredField': "必須項目を入力してください",
           'registeredItems': "すでに登録されたアイテムです。",
@@ -171,6 +173,7 @@ class Languages extends Translations {
 
           // Exception
           'errorText': "Error",
+          'alreadyExistTag': "The tag is already registered.",
           'unknownExcetipn': "An unknown error has occurred.",
           'needRequiredField': "Please enter the required field",
           'registeredItems': "This item is already registered.",

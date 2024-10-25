@@ -133,6 +133,7 @@ class CorporateInfoScreen extends StatelessWidget {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           company.name,
@@ -143,6 +144,17 @@ class CorporateInfoScreen extends StatelessWidget {
               ),
         ),
         CorporateBarChart(),
+        Wrap(
+          spacing: 8.0,
+          runSpacing: 4.0,
+          children: companyInfoProvider.tags
+              .map(
+                (tags) => Chip(
+                  label: Text(tags.tagName),
+                ),
+              )
+              .toList(),
+        ),
         CorporateComments(),
         Obx(
           () => BottomLoading(

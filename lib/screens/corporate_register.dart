@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
-import 'package:flutter_application_1/models/search_tag_model.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
@@ -23,7 +22,6 @@ class CorporateRegister extends StatelessWidget {
   final TextEditingController _companyNameController = TextEditingController(text: Get.arguments['keyword']);
   final TextEditingController _companyHomepageController = TextEditingController();
   final TextEditingController _companyLocationController = TextEditingController();
-  final TextEditingController _companyTagsController = TextEditingController();
 
   final Company company = Company();
 

@@ -4,7 +4,7 @@ class SearchTagModel {
   final String tagName;
   final bool isDelete;
 
-  SearchTagModel({required this.tagName, required this.isDelete});
+  SearchTagModel({required this.tagName, this.isDelete = false});
 
   static List<SearchTagModel> fromStringToList(String tags) {
     if (tags.isEmpty) {

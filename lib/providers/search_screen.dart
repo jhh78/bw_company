@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
@@ -18,6 +20,7 @@ class SearchScreenProvider extends GetxController {
   RxBool isInitItemLoading = false.obs;
   RxBool isCompanySearchLoading = false.obs;
   RxBool isDisplayCompanyAddButton = false.obs;
+  RxBool isSearchMode = false.obs;
 
   Future<void> getAutoCompleatFieldCompanyList() async {
     final pb = PocketBase(API_URL);
@@ -83,8 +86,8 @@ class SearchScreenProvider extends GetxController {
     }
   }
 
-  void resetSearchItems() {
-    searchList.value = List.from(oriSearchList);
+  void resetSearchItems() async {
+    await readyForSearchScreen();
   }
 
   void setSearchListValue(List<SearchScreenModel> list) {
@@ -92,11 +95,15 @@ class SearchScreenProvider extends GetxController {
   }
 
   void searchKeywordItem(String keyword) async {
+    isInitItemLoading.value = true;
+    await delayScreen();
+
     final pb = PocketBase(API_URL);
     final records = await pb.collection('company').getFullList(
-          filter: "name='$keyword'",
+          filter: "name='$keyword' || tags~'$keyword'",
         );
     searchList.value = records.map((e) => SearchScreenModel.fromJson(e)).toList();
+    isInitItemLoading.value = false;
   }
 
   List<Company> findCompanyList(String search) => companyList.where((item) => item.name.contains(search)).toList();

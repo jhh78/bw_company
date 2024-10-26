@@ -40,7 +40,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
     return Column(
       children: <Widget>[
         SearchInputForm(),
-        ListContents(),
+        const ListContents(),
         Obx(
           () => BottomLoading(
             check: _searchScreenProvider.isAppendItemLoading.value,
@@ -71,6 +71,20 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
     );
   }
 
+  Widget renderCompanyAddButton() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: IconButton(
+        icon: const Icon(
+          Icons.add_home_work_outlined,
+          color: Colors.blue,
+          size: 35,
+        ),
+        onPressed: handleMoveRegisterScreen,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -81,7 +95,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
           title: Text("searchListTitle".tr),
           centerTitle: true,
           actions: [
-            Obx(() => renderCompanyAddButton()),
+            renderCompanyAddButton(),
           ],
         ),
         drawer: const SideMenu(),
@@ -90,24 +104,6 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
           color: Colors.white,
           child: renderSearchScreen(),
         ),
-      ),
-    );
-  }
-
-  Widget renderCompanyAddButton() {
-    if (!_searchScreenProvider.isDisplayCompanyAddButton.value) {
-      return const SizedBox.shrink();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: IconButton(
-        icon: const Icon(
-          Icons.add_home_work_outlined,
-          color: Colors.blue,
-          size: 35,
-        ),
-        onPressed: handleMoveRegisterScreen,
       ),
     );
   }

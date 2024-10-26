@@ -5,14 +5,20 @@ import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/utils/util.dart';
 import 'package:get/get.dart';
 
-class ListContents extends StatelessWidget {
-  ListContents({
-    super.key,
-  });
+class ListContents extends StatefulWidget {
+  const ListContents({super.key});
 
+  @override
+  State<ListContents> createState() => _ListContentsState();
+}
+
+class _ListContentsState extends State<ListContents> {
   final SearchScreenProvider _searchScreenProvider = Get.put(SearchScreenProvider());
   final ScrollController _scrollController = ScrollController();
-  void initScreen() {
+
+  @override
+  void initState() {
+    super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels != _scrollController.position.maxScrollExtent) return;
 
@@ -20,7 +26,19 @@ class ListContents extends StatelessWidget {
     });
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   Widget _renderItems() {
+    if (_searchScreenProvider.isInitItemLoading.value) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     if (_searchScreenProvider.searchList.isEmpty) {
       return Center(
         child: Text("dataNotFound".tr, style: const TextStyle(fontSize: 20)),
@@ -73,7 +91,6 @@ class ListContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    initScreen();
     return Expanded(
       child: Container(
         margin: const EdgeInsets.only(top: 10),

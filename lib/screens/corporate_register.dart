@@ -14,9 +14,14 @@ import 'package:get/get.dart';
 
 const String location = "lib/screens/corporate_register.dart";
 
-class CorporateRegister extends StatelessWidget {
-  CorporateRegister({super.key});
+class CorporateRegister extends StatefulWidget {
+  const CorporateRegister({super.key});
 
+  @override
+  State<CorporateRegister> createState() => _CorporateRegisterState();
+}
+
+class _CorporateRegisterState extends State<CorporateRegister> {
   final SystemsProvider systemsProvider = Get.put(SystemsProvider());
 
   final TextEditingController _companyNameController = TextEditingController(text: Get.arguments['keyword']);
@@ -24,6 +29,12 @@ class CorporateRegister extends StatelessWidget {
   final TextEditingController _companyLocationController = TextEditingController();
 
   final Company company = Company();
+
+  @override
+  void initState() {
+    super.initState();
+    systemsProvider.formValidate.clear();
+  }
 
   Widget renderTextField(BuildContext context, String label, String validateKey,
       {String? helperText, bool readOnly = false, TextEditingController? controller}) {
@@ -45,6 +56,10 @@ class CorporateRegister extends StatelessWidget {
   void _registerCompany() async {
     try {
       systemsProvider.formValidate.clear();
+
+      if (_companyNameController.text.isEmpty) {
+        systemsProvider.formValidate['companyName'] = true;
+      }
 
       if (_companyHomepageController.text.isEmpty || !isValidUrl(_companyHomepageController.text)) {
         systemsProvider.formValidate['companyHomepage'] = true;
@@ -102,8 +117,8 @@ class CorporateRegister extends StatelessWidget {
                 context,
                 "registerCompanyScreenNeedCompanyName".tr,
                 'companyName',
+                helperText: "registerCompanyScreenNeedCompanyName".tr,
                 controller: _companyNameController,
-                readOnly: true,
               ),
               renderTextField(
                 context,

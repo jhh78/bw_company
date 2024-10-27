@@ -38,68 +38,6 @@ class CorporateInfoScreen extends StatelessWidget {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    initScreen();
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.blueGrey,
-          ),
-          onPressed: () {
-            Get.offAll(() => const SearchScreen(), transition: Transition.fade);
-          },
-        ),
-        actions: [
-          Container(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => openBrowser(company.homepage.toString()),
-                  icon: const Icon(
-                    Icons.home_outlined,
-                    size: 32,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => openBrowser(company.location.toString()),
-                  icon: const Icon(
-                    Icons.location_on_outlined,
-                    size: 32,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Get.to(
-                      () => CommentRegister(company: company),
-                      transition: Transition.downToUp,
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.add_comment_outlined,
-                    size: 32,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          child: Obx(() => renderContents(context)),
-        ),
-      ),
-    );
-  }
-
   Widget renderContents(BuildContext context) {
     if (companyInfoProvider.isInitItemLoading.value) {
       return const Center(
@@ -157,11 +95,78 @@ class CorporateInfoScreen extends StatelessWidget {
         ),
         CorporateComments(),
         Obx(
-          () => BottomLoading(
-            check: companyInfoProvider.isAppendItemLoading.value,
+          () => Center(
+            child: BottomLoading(
+              check: companyInfoProvider.isAppendItemLoading.value,
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    initScreen();
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.blueGrey,
+          ),
+          onPressed: () {
+            Get.offAll(
+              () => const SearchScreen(),
+              transition: Transition.fade,
+            );
+          },
+        ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.only(right: 30),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => openBrowser(company.homepage.toString()),
+                  icon: const Icon(
+                    Icons.home_outlined,
+                    size: 32,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => openBrowser(company.location.toString()),
+                  icon: const Icon(
+                    Icons.location_on_outlined,
+                    size: 32,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Get.to(
+                      () => CommentRegister(company: company),
+                      transition: Transition.downToUp,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.add_comment_outlined,
+                    size: 32,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Obx(() => renderContents(context)),
+        ),
+      ),
     );
   }
 }

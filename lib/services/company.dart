@@ -48,8 +48,12 @@ Future<void> registerComment(CompanyRegisterFormModel params) async {
 }
 
 Future<void> registerCompany(Company company) async {
-  final pb = PocketBase(API_URL);
-  log('registerCompany: ${company.toJson()}');
-  final record = await pb.collection('company').create(body: company.toJson());
-  company.id = record.id;
+  try {
+    final pb = PocketBase(API_URL);
+    log('registerCompany: ${company.toJson()}');
+    final record = await pb.collection('company').create(body: company.toJson());
+    company.id = record.id;
+  } catch (e) {
+    log('registerCompany error: $e');
+  }
 }

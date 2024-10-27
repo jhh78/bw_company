@@ -15,13 +15,16 @@ import 'package:get/get.dart';
 
 const String location = "lib/screens/comment_register.dart";
 
-class CommentRegister extends StatelessWidget {
-  CommentRegister({super.key, required this.company});
-
+class CommentRegister extends StatefulWidget {
+  const CommentRegister({super.key, required this.company});
   final Company company;
 
+  @override
+  State<CommentRegister> createState() => _CommentRegisterState();
+}
+
+class _CommentRegisterState extends State<CommentRegister> {
   final SystemsProvider _validateionProvider = Get.put(SystemsProvider());
-  final CompanyInfoProvider companyInfoProvider = Get.put(CompanyInfoProvider());
   final CompanyRegisterFormModel _companyRegisterModel = CompanyRegisterFormModel();
 
   final TextEditingController _titleController = TextEditingController();
@@ -30,6 +33,12 @@ class CommentRegister extends StatelessWidget {
   final TextEditingController _salaryWelfareController = TextEditingController();
   final TextEditingController _corporateCultureController = TextEditingController();
   final TextEditingController _managementController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   void _careerRatingUpdate(double rating) {
     _companyRegisterModel.companyRating.careerRating = rating;
@@ -78,7 +87,7 @@ class CommentRegister extends StatelessWidget {
         _validateionProvider.formValidate['management'] = true;
       }
 
-      _companyRegisterModel.company = company;
+      _companyRegisterModel.company = widget.company;
       _companyRegisterModel.companyComment.title = _titleController.text;
       _companyRegisterModel.companyComment.career = _careerController.text;
       _companyRegisterModel.companyComment.workingEnvironment = _workingEnvironmentController.text;
@@ -98,7 +107,7 @@ class CommentRegister extends StatelessWidget {
       await registerComment(_companyRegisterModel);
 
       Get.offAll(
-        () => CorporateInfoScreen(company: company),
+        () => CorporateInfoScreen(company: widget.company),
         transition: Transition.rightToLeft,
       );
     } catch (e) {
@@ -113,7 +122,7 @@ class CommentRegister extends StatelessWidget {
   }
 
   void _changeTagList(List<String> tagList) {
-    company.tags = tagList.join(SEARCH_TAG_SEPARATOR);
+    widget.company.tags = tagList.join(SEARCH_TAG_SEPARATOR);
   }
 
   @override
@@ -133,7 +142,7 @@ class CommentRegister extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                 alignment: Alignment.center,
                 child: Text(
-                  company.name,
+                  widget.company.name,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),

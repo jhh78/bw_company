@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
-import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/services/company.dart';

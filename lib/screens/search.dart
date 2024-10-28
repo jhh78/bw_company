@@ -23,7 +23,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
-    _searchScreenProvider.readyForSearchScreen().then((_) {
+    _searchScreenProvider.initItems().then((_) {
       setState(() {
         _isInit = true;
       });
@@ -63,7 +63,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
     }
 
     Get.to(
-      () => CorporateRegister(),
+      () => const CorporateRegister(),
       arguments: {
         'keyword': _searchScreenProvider.searchController.value.text,
       },

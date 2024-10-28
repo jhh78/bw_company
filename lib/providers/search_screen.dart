@@ -33,10 +33,10 @@ class SearchScreenProvider extends GetxController {
 
   Future<void> getFirstItems() async {
     searchList.clear();
-    await process();
+    await getItems();
   }
 
-  Future<void> readyForSearchScreen() async {
+  Future<void> initItems() async {
     isInitItemLoading.value = true;
 
     await delayScreen();
@@ -60,12 +60,12 @@ class SearchScreenProvider extends GetxController {
     page.value += 1;
 
     await delayScreen();
-    await process();
+    await getItems();
 
     isAppendItemLoading.value = false;
   }
 
-  Future<void> process() async {
+  Future<void> getItems() async {
     final pb = PocketBase(API_URL);
     final resultList = await pb.collection('searchScreenCompanyList').getList(
           page: page.value,
@@ -80,14 +80,8 @@ class SearchScreenProvider extends GetxController {
     oriSearchList = List.from(searchList);
   }
 
-  void filterSearchItems(String keyword) {
-    if (keyword.isNotEmpty) {
-      searchList.value = oriSearchList.where((item) => item.company.name.contains(keyword)).toList().obs;
-    }
-  }
-
   void resetSearchItems() async {
-    await readyForSearchScreen();
+    await initItems();
   }
 
   void setSearchListValue(List<SearchScreenModel> list) {
@@ -100,7 +94,7 @@ class SearchScreenProvider extends GetxController {
 
     final pb = PocketBase(API_URL);
     final records = await pb.collection('company').getFullList(
-          filter: "name='$keyword' || tags~'$keyword'",
+          filter: "name~'$keyword' || tags~'$keyword'",
         );
     searchList.value = records.map((e) => SearchScreenModel.fromJson(e)).toList();
     isInitItemLoading.value = false;

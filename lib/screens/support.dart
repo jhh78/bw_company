@@ -20,8 +20,8 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   bool _isReady = false;
   String _text = "";
-  final AdManager adManager = AdManager();
   final PaymentManager _purchaseManager = PaymentManager();
+  final AdManager adManager = Get.put(AdManager());
 
   void _getNoticeData() async {
     try {
@@ -65,18 +65,6 @@ class _SupportScreenState extends State<SupportScreen> {
     }
   }
 
-  _showAd() async {
-    try {
-      await adManager.showAd();
-    } catch (e) {
-      CustomSnackbar(
-        title: "errorText".tr,
-        message: "adLoadFailed".tr,
-        status: ObserveSnackbarStatus.ERROR,
-      ).showSnackbar();
-    }
-  }
-
   Widget renderContents() {
     if (!_isReady) {
       return const Center(
@@ -111,7 +99,7 @@ class _SupportScreenState extends State<SupportScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: _showAd,
+                  onPressed: adManager.loadAd,
                   child: Text('viewAD'.tr),
                 ),
                 ElevatedButton(
@@ -128,12 +116,30 @@ class _SupportScreenState extends State<SupportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('supportScreenTitle'.tr),
-        centerTitle: true,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text('supportScreenTitle'.tr),
+            centerTitle: true,
+          ),
+          body: renderContents(),
+        ),
+        Obx(() => _renderLoadingOverlap()),
+      ],
+    );
+  }
+
+  Widget _renderLoadingOverlap() {
+    if (!adManager.isAdReady.value) return const SizedBox.shrink();
+
+    return Positioned.fill(
+      child: Container(
+        color: Colors.black54,
+        child: const Center(
+          child: RefreshProgressIndicator(),
+        ),
       ),
-      body: renderContents(),
     );
   }
 }

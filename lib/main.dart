@@ -13,7 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
 // TODO ::: 애플 결제 연동
-// TODO ::: 광고가 한템포 느려지는 문제 해결
 
 // TODO ::: 디자인 약간 손봐야됨
 // TODO ::: 번역검증

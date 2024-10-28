@@ -3,16 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_application_1/services/exception.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 const String location = "lib/services/ad_manager.dart";
 
-class AdManager {
-  InterstitialAd? _interstitialAd;
-
-  AdManager() {
-    loadAd();
-  }
+class AdManager extends GetxService {
+  RxBool isAdReady = false.obs;
 
   String _getADUnitId() {
     if (Platform.isAndroid) {
@@ -26,13 +23,14 @@ class AdManager {
 
   Future<void> loadAd() async {
     try {
+      isAdReady.value = true;
       await InterstitialAd.load(
         adUnitId: _getADUnitId(),
         request: const AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (ad) async {
-            _interstitialAd = ad;
-            log('Ad loaded. $_interstitialAd');
+            log('Ad loaded. $ad');
+            await ad.show();
 
             ad.fullScreenContentCallback = FullScreenContentCallback(
               onAdShowedFullScreenContent: (ad) {
@@ -40,6 +38,8 @@ class AdManager {
               },
               onAdImpression: (ad) {
                 log('Ad impression: $ad');
+                ad.dispose();
+                isAdReady.value = false;
               },
               onAdFailedToShowFullScreenContent: (ad, err) async {
                 log('Ad failed to show fullscreen content: $err');
@@ -59,7 +59,6 @@ class AdManager {
           },
           onAdFailedToLoad: (error) {
             writeLogs(location, error.toString());
-            _interstitialAd = null;
             throw Exception("Failed to load an ad: $error");
           },
         ),
@@ -68,14 +67,5 @@ class AdManager {
       writeLogs(location, e.toString());
       log(e.toString());
     }
-  }
-
-  showAd() {
-    if (_interstitialAd == null) {
-      loadAd();
-      throw Exception("InterstitialAd is null");
-    }
-
-    _interstitialAd!.show();
   }
 }

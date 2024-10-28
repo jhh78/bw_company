@@ -9,7 +9,6 @@ import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/util.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 const String location = "lib/providers/company_info.dart";

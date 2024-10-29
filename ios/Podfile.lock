@@ -80,7 +80,7 @@ SPEC CHECKSUMS:
   google_mobile_ads: 2a538d8e42b1813809782792e48f8cf4374c2180
   GoogleUserMessagingPlatform: 0c3a08353e53ce8c2feab7addd0b652cde522450
   in_app_purchase_storekit: 8c3b0b3eb1b0f04efbff401c3de6266d4258d433
-  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   pointer_interceptor_ios: 508241697ff0947f853c061945a8b822463947c1
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78

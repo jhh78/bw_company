@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
-import 'package:flutter_application_1/services/vender/ad.dart';
-import 'package:flutter_application_1/services/vender/payment.dart';
+import 'package:flutter_application_1/providers/vender/ad.dart';
+import 'package:flutter_application_1/providers/vender/purchase.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -20,8 +20,8 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   bool _isReady = false;
   String _text = "";
-  final PaymentManager _purchaseManager = PaymentManager();
-  final AdManager adManager = Get.put(AdManager());
+  final PurchaseManager _purchaseManager = Get.put(PurchaseManager());
+  final ADManager adManager = Get.put(ADManager());
 
   void _getNoticeData() async {
     try {

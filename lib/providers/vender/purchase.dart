@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_application_1/services/exception.dart';
+import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 const String location = "lib/services/vender/payment.dart";
@@ -8,12 +9,14 @@ const String location = "lib/services/vender/payment.dart";
 // 실제 제품 ID로 변경
 const Set<String> kIds = {'100en'};
 
-class PaymentManager {
+class PurchaseManager extends GetxService {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   late List<ProductDetails> _products;
 
-  PaymentManager() {
+  @override
+  void onInit() {
+    super.onInit();
     initialize();
   }
 

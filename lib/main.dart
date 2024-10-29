@@ -12,7 +12,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
-// TODO ::: 애플 결제 연동
+// TODO ::: 광고로드 실패시 알람띄우기
 
 // TODO ::: 디자인 약간 손봐야됨
 // TODO ::: 번역검증

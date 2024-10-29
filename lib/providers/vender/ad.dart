@@ -8,7 +8,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 const String location = "lib/services/ad_manager.dart";
 
-class AdManager extends GetxService {
+class ADManager extends GetxService {
   RxBool isAdReady = false.obs;
 
   String _getADUnitId() {

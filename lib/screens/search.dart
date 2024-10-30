@@ -72,6 +72,10 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
   }
 
   Widget renderCompanyAddButton() {
+    if (_searchScreenProvider.isInitItemLoading.value) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
@@ -95,7 +99,7 @@ class SearchScreenState extends State<SearchScreen> with SingleTickerProviderSta
           title: Text("searchListTitle".tr),
           centerTitle: true,
           actions: [
-            renderCompanyAddButton(),
+            Obx(() => renderCompanyAddButton()),
           ],
         ),
         drawer: const SideMenu(),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
@@ -65,6 +67,18 @@ class _SupportScreenState extends State<SupportScreen> {
     }
   }
 
+  void loadAd() async {
+    try {
+      await adManager.loadAd();
+    } catch (e) {
+      CustomSnackbar(
+        title: "errorText".tr,
+        message: "adLoadFailed".tr,
+        status: ObserveSnackbarStatus.ERROR,
+      ).showSnackbar();
+    }
+  }
+
   Widget renderContents() {
     if (!_isReady) {
       return const Center(
@@ -97,21 +111,35 @@ class _SupportScreenState extends State<SupportScreen> {
             color: Colors.grey[200],
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: adManager.loadAd,
-                  child: Text('viewAD'.tr),
-                ),
-                ElevatedButton(
-                  onPressed: () => _buyProduct(0),
-                  child: Text('donate'.tr),
-                ),
-              ],
+              children: renderButtonArea(),
             ),
           ),
         ),
       ],
     );
+  }
+
+  // TODO ::: 앱스토어 결제문제 해결되면 조건 해제
+  List<Widget> renderButtonArea() {
+    if (Platform.isIOS) {
+      return [
+        ElevatedButton(
+          onPressed: loadAd,
+          child: Text('viewAD'.tr),
+        ),
+      ];
+    }
+
+    return [
+      ElevatedButton(
+        onPressed: loadAd,
+        child: Text('viewAD'.tr),
+      ),
+      ElevatedButton(
+        onPressed: () => _buyProduct(0),
+        child: Text('donate'.tr),
+      ),
+    ];
   }
 
   @override

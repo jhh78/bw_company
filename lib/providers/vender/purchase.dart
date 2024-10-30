@@ -48,6 +48,7 @@ class PurchaseManager extends GetxService {
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           // 구매 완료 처리
           log("Purchase successful: ${purchaseDetails.productID}");
+          _inAppPurchase.completePurchase(purchaseDetails);
         }
       }
     } catch (error) {

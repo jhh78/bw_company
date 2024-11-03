@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/help.dart';
 import 'package:flutter_application_1/screens/notice.dart';
+import 'package:flutter_application_1/screens/plicy_view.dart';
+import 'package:flutter_application_1/screens/policy.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/screens/support.dart';
 import 'package:get/get.dart';
@@ -48,6 +50,26 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.help_outline),
             title: Text('naviHelp'.tr),
+            onTap: () {
+              Get.to(
+                () => const HelpScreen(),
+                transition: Transition.fade,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.local_police_outlined),
+            title: Text('policy'.tr),
+            onTap: () {
+              Get.to(
+                () => const PolicyViewScreen(),
+                transition: Transition.fade,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app_outlined),
+            title: Text('exitMember'.tr),
             onTap: () {
               Get.to(
                 () => const HelpScreen(),

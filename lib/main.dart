@@ -13,10 +13,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
 // TODO ::: 디자인 약간 손봐야됨
-// TODO ::: 번역검증
-// TODO ::: 공지사항및 고정데이터 추가
+
+// ph1
 //  TODO ::: 탈퇴 페이지 추가
 //  TODO ::: 규약 페이지 추가
+//  TODO ::: 유저의뢰 페이지 추가(기능추가 및 버그 수정)
+
+// ph2
+//  TODO ::: 애플 결제 부분 추가
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

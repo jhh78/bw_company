@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/help.dart';
+import 'package:flutter_application_1/screens/member_exit.dart';
 import 'package:flutter_application_1/screens/notice.dart';
 import 'package:flutter_application_1/screens/plicy_view.dart';
-import 'package:flutter_application_1/screens/policy.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/screens/support.dart';
 import 'package:get/get.dart';
@@ -72,7 +72,7 @@ class SideMenu extends StatelessWidget {
             title: Text('exitMember'.tr),
             onTap: () {
               Get.to(
-                () => const HelpScreen(),
+                () => const MemberExitScreen(),
                 transition: Transition.fade,
               );
             },

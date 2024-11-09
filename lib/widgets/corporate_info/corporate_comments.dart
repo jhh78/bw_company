@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
+import 'package:flutter_application_1/screens/comment_detail.dart';
 import 'package:flutter_application_1/utils/util.dart';
-import 'package:flutter_application_1/widgets/corporate_info/comment_detail_screen.dart';
 import 'package:get/get.dart';
 
 class CorporateComments extends StatelessWidget {

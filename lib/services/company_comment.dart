@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter_application_1/models/collections/company_comment.dart';
-import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/utils/constants.dart';
-import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 Future<CompanyComment> companyCommentThumbUpDown(CompanyComment params, ThumbStatus type) async {

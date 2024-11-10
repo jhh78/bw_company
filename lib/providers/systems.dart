@@ -19,9 +19,4 @@ class SystemsProvider extends GetxController {
     isProcessing.value = false;
     // 추가적인 초기화 작업을 여기에 추가할 수 있습니다.
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

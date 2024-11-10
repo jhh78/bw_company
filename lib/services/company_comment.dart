@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter_application_1/models/collections/company_comment.dart';
+import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/utils/constants.dart';
+import 'package:get/get.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 Future<CompanyComment> companyCommentThumbUpDown(CompanyComment params, ThumbStatus type) async {
@@ -25,4 +29,12 @@ Future<CompanyComment> companyCommentThumbUpDown(CompanyComment params, ThumbSta
 
   final record = await pb.collection('comment').update(params.id, body: body, expand: 'refCompany,refUser');
   return CompanyComment.fromMap(record);
+}
+
+Future reportIllegalPost(String commentId, String contents) async {
+  final pb = PocketBase(API_URL);
+
+  final body = <String, dynamic>{"comment_id": commentId, "contents": contents};
+
+  await pb.collection('report').create(body: body);
 }

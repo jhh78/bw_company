@@ -7,6 +7,7 @@ import 'package:flutter_application_1/providers/vender/ad.dart';
 import 'package:flutter_application_1/providers/vender/purchase.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
+import 'package:flutter_application_1/widgets/common/orverlap_loading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 
@@ -142,6 +143,11 @@ class _SupportScreenState extends State<SupportScreen> {
     ];
   }
 
+  Widget _renderLoadingOverlap() {
+    if (!adManager.isAdReady.value) return const SizedBox.shrink();
+    return const OrverlapLoading();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -155,19 +161,6 @@ class _SupportScreenState extends State<SupportScreen> {
         ),
         Obx(() => _renderLoadingOverlap()),
       ],
-    );
-  }
-
-  Widget _renderLoadingOverlap() {
-    if (!adManager.isAdReady.value) return const SizedBox.shrink();
-
-    return Positioned.fill(
-      child: Container(
-        color: Colors.black54,
-        child: const Center(
-          child: RefreshProgressIndicator(),
-        ),
-      ),
     );
   }
 }

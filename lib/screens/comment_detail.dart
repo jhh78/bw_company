@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/orverlap_loading.dart';
 import 'package:flutter_application_1/widgets/register/custom_text_input_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
@@ -20,6 +21,7 @@ class CommentDetailScreen extends StatefulWidget {
 
 class CommentDetailScreenState extends State<CommentDetailScreen> {
   CompanyComment get comment => widget.comment;
+  SystemsProvider systemsProvider = Get.put(SystemsProvider());
 
   @override
   void initState() {

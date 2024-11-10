@@ -1,0 +1,4 @@
+<resources>
+    <!-- Set this value to false to exclude tablets -->
+    <bool name="is_tablet">false</bool>
+</resources>

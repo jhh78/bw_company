@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Users {
   String id;
   String name;
@@ -12,6 +14,10 @@ class Users {
       id: json['id'],
       name: json['name'],
     );
+  }
+
+  factory Users.fromString(String jsonString) {
+    return Users.fromJson(jsonDecode(jsonString));
   }
 
   Map<String, dynamic> toJson() {

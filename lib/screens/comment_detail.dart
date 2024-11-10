@@ -1,15 +1,26 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/collections/company.dart';
+import 'package:flutter_application_1/models/collections/users.dart';
+import 'package:flutter_application_1/models/localdata.dart';
+import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/systems.dart';
+import 'package:flutter_application_1/screens/corporate_info.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/widgets/comment_detail/comment_contents_area.dart';
 import 'package:flutter_application_1/widgets/comment_detail/comment_thumb_area.dart';
+import 'package:hive/hive.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class CommentDetailScreen extends StatefulWidget {
   final CompanyComment comment;
+  final Company company;
 
-  const CommentDetailScreen({super.key, required this.comment});
+  const CommentDetailScreen({super.key, required this.comment, required this.company});
 
   @override
   CommentDetailScreenState createState() => CommentDetailScreenState();
@@ -17,11 +28,19 @@ class CommentDetailScreen extends StatefulWidget {
 
 class CommentDetailScreenState extends State<CommentDetailScreen> {
   CompanyComment get comment => widget.comment;
+  Company get company => widget.company;
+
   SystemsProvider systemsProvider = Get.put(SystemsProvider());
+  final CompanyInfoProvider companyInfoProvider = Get.put(CompanyInfoProvider());
+  late bool isDisplayDeleteButton;
 
   @override
   void initState() {
     super.initState();
+    Users user = Users.fromString(comment.refUser);
+    Box box = Hive.box<Localdata>(SYSTEM_BOX);
+    Localdata? localdata = box.get(LOCAL_DATA);
+    isDisplayDeleteButton = user.id == localdata?.uuid;
   }
 
   @override
@@ -54,6 +73,7 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
               );
             },
           ),
+          renderDeleteButton(),
         ],
       ),
       body: Hero(
@@ -82,6 +102,53 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget renderDeleteButton() {
+    if (!isDisplayDeleteButton) {
+      return const SizedBox.shrink();
+    }
+
+    void moveScreen() {
+      Get.offAll(
+        () => CorporateInfoScreen(company: company),
+        transition: Transition.rightToLeft,
+      );
+    }
+
+    return TextButton.icon(
+      label: Text(
+        "deleteButton".tr,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
+      ),
+      icon: const Icon(
+        Icons.delete_outline,
+        color: Colors.red,
+        size: 20,
+      ),
+      onPressed: () async {
+        final pb = PocketBase(API_URL);
+        await pb.collection('comment').delete(comment.id);
+        companyInfoProvider.comments.removeWhere((element) => element.id == comment.id);
+        Get.defaultDialog(
+          title: "",
+          middleText: "processCompleted".tr,
+          barrierDismissible: true,
+          onWillPop: () async {
+            moveScreen();
+            return true; // 다이얼로그를 닫음
+          },
+          actions: [
+            ElevatedButton(
+              onPressed: moveScreen,
+              child: Text(
+                "ok".tr,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

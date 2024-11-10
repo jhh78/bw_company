@@ -42,13 +42,6 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
 
-    <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="false"
-        android:xlargeScreens="false"
-        android:requiresSmallestWidthDp="600" />
-        
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

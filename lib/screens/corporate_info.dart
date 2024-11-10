@@ -93,7 +93,7 @@ class CorporateInfoScreen extends StatelessWidget {
               )
               .toList(),
         ),
-        CorporateComments(),
+        CorporateComments(company: company),
         Obx(
           () => Center(
             child: BottomLoading(

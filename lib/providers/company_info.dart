@@ -46,7 +46,6 @@ class CompanyInfoProvider extends GetxController {
           isInitItemLoading.value = true;
           comments.clear();
 
-          // 로딩 화면을 보여주기 위한 함수, 릴리즈 모드에선 작동 안함
           await delayScreen();
 
           final pb = PocketBase(API_URL);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
 import 'package:flutter_application_1/utils/util.dart';
@@ -7,10 +8,12 @@ import 'package:get/get.dart';
 class CorporateComments extends StatelessWidget {
   CorporateComments({
     super.key,
+    required this.company,
   });
 
   final CompanyInfoProvider companyInfoProvider = Get.put(CompanyInfoProvider());
   final ScrollController _scrollController = ScrollController();
+  final Company company;
 
   void initScreen() {
     _scrollController.addListener(() {
@@ -63,7 +66,7 @@ class CorporateComments extends StatelessWidget {
               ],
             ),
             onTap: () {
-              Get.to(() => CommentDetailScreen(comment: comment));
+              Get.to(() => CommentDetailScreen(comment: comment, company: company));
             },
             title: Hero(
               tag: 'comment_${comment.id}',

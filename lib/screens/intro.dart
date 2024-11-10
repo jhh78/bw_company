@@ -14,8 +14,33 @@ import 'package:pocketbase/pocketbase.dart';
 
 const String location = "lib/screens/intro.dart";
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
+
+  @override
+  State<IntroScreen> createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Future<String> getAppVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -90,6 +115,22 @@ class IntroScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                 ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              padding: const EdgeInsets.only(bottom: 50),
+              child: AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _animation.value,
+                    child: Text(
+                      'pleaseTouchScreenAndStart'.tr,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  );
+                },
               ),
             ),
             Container(

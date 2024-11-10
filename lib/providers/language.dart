@@ -4,6 +4,7 @@ class Languages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'ko_KR': {
+          'pleaseTouchScreenAndStart': '화면을 터치하여 시작하세요',
           'maintenance': '서버 점검중입니다.',
           'maintenanceText': '잠시 후 다시 시도해주세요.',
           'processCompleted': '처리가 완료되었습니다.',
@@ -70,6 +71,7 @@ class Languages extends Translations {
           'productLoadFailed': '상품 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
         },
         'ja_JP': {
+          'pleaseTouchScreenAndStart': '画面をタッチして開始してください',
           'maintenance': 'サーバーメンテナンス中です。',
           'maintenanceText': 'しばらくしてから再度お試しください。',
           'processCompleted': '処理が完了しました。',
@@ -136,6 +138,7 @@ class Languages extends Translations {
           'productLoadFailed': '商品のロードに失敗しました。\nしばらくしてから再度お試しください。',
         },
         'en_US': {
+          'pleaseTouchScreenAndStart': 'Touch the screen to start',
           'maintenance': 'Server maintenance is in progress.',
           'maintenanceText': 'Please try again later.',
           'processCompleted': 'Processing has been completed.',

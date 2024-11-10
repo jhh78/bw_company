@@ -12,6 +12,9 @@ class AppInfoScreen extends StatefulWidget {
 class _AppInfoScreenState extends State<AppInfoScreen> with SingleTickerProviderStateMixin {
   double _opacity = 0.0;
 
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +24,19 @@ class _AppInfoScreenState extends State<AppInfoScreen> with SingleTickerProvider
         _opacity = 1.0;
       });
     });
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<double>(begin: 1.0, end: 0.0).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,22 +50,42 @@ class _AppInfoScreenState extends State<AppInfoScreen> with SingleTickerProvider
             transition: Transition.fade,
             duration: const Duration(seconds: 1),
           ),
-          child: Container(
-            padding: const EdgeInsets.all(30),
-            child: Center(
-              child: AnimatedOpacity(
-                opacity: _opacity,
-                duration: const Duration(seconds: 1),
-                curve: Curves.easeIn,
-                child: Text(
-                  "appInfoTitle".tr,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontStyle: FontStyle.italic,
-                      ),
+          child: Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                  child: AnimatedOpacity(
+                    opacity: _opacity,
+                    duration: const Duration(seconds: 1),
+                    curve: Curves.easeIn,
+                    child: Text(
+                      "appInfoTitle".tr,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.only(bottom: 50),
+                child: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _animation.value,
+                      child: Text(
+                        'pleaseTouchScreenAndStart'.tr,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

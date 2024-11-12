@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
+import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/systems.dart';
+import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/services/company_comment.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 const String location = "lib/widgets/comment_detail/report_illegal_post.dart";
 
@@ -13,9 +17,11 @@ class ReportIllegalPost extends StatefulWidget {
   const ReportIllegalPost({
     super.key,
     required this.comment,
+    required this.company,
   });
 
   final CompanyComment comment;
+  final Company company;
 
   @override
   State<ReportIllegalPost> createState() => _ReportIllegalPostState();
@@ -33,18 +39,30 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
         return;
       }
 
+      Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
+      Localdata? userData = box.get(LOCAL_DATA);
+
+      if (userData == null) {
+        throw Exception('User data is null');
+      }
+
+      userData.commentBlock.add(widget.comment.id);
+      box.put(LOCAL_DATA, userData);
+
       _systemsProvider.isProcessing.value = true;
       await reportIllegalPost(widget.comment.id, _reportContentsController.text);
       _systemsProvider.initializeData();
-
       Get.back();
       await Future.delayed(const Duration(milliseconds: 500));
 
-      CustomSnackbar(
+      Get.defaultDialog(
         title: 'info'.tr,
-        message: 'reportIllegalPostSuccess'.tr,
-        status: ObserveSnackbarStatus.INFO,
-      ).showSnackbar();
+        middleText: 'reportIllegalPostSuccess'.tr,
+        barrierDismissible: false,
+        onConfirm: () {
+          Get.offAll(() => CorporateInfoScreen(company: widget.company));
+        },
+      );
     } catch (e) {
       writeLogs(location, e.toString());
       CustomSnackbar(

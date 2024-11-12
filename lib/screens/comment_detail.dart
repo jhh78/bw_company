@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/users.dart';
@@ -53,28 +51,7 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          TextButton.icon(
-            label: Text(
-              "reportIllegalPost".tr,
-              style: const TextStyle(color: Colors.red, fontSize: 16),
-            ),
-            icon: const Icon(
-              Icons.report_gmailerrorred,
-              color: Colors.red,
-              size: 20,
-            ),
-            onPressed: () {
-              Get.bottomSheet(
-                ReportIllegalPost(comment: comment),
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-              );
-            },
-          ),
-          renderDeleteButton(),
-        ],
+        actions: renderAppbarActions(),
       ),
       body: Hero(
         tag: 'comment_${comment.id}',
@@ -102,6 +79,39 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  List<Widget> renderAppbarActions() {
+    return [
+      renderReportButton(),
+      renderDeleteButton(),
+    ];
+  }
+
+  Widget renderReportButton() {
+    if (isDisplayDeleteButton) {
+      return const SizedBox.shrink();
+    }
+
+    return TextButton.icon(
+      label: Text(
+        "reportIllegalPost".tr,
+        style: const TextStyle(color: Colors.red, fontSize: 16),
+      ),
+      icon: const Icon(
+        Icons.report_gmailerrorred,
+        color: Colors.red,
+        size: 20,
+      ),
+      onPressed: () {
+        Get.bottomSheet(
+          ReportIllegalPost(comment: comment, company: company),
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+        );
+      },
     );
   }
 

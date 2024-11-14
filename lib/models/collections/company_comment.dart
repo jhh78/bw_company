@@ -13,6 +13,7 @@ class CompanyComment {
   String refCompany;
   String refUser;
   String id;
+  bool isBlocked = false;
 
   CompanyComment({
     this.title = '',
@@ -26,6 +27,7 @@ class CompanyComment {
     this.thumbDown = 0,
     this.refCompany = '',
     this.refUser = '',
+    this.isBlocked = false,
   });
 
   factory CompanyComment.fromMap(RecordModel record) {
@@ -41,6 +43,7 @@ class CompanyComment {
       id: record.id,
       thumbUp: record.data['thumbUp'],
       thumbDown: record.data['thumbDown'],
+      isBlocked: false,
     );
   }
 
@@ -57,6 +60,7 @@ class CompanyComment {
       'id': id,
       'thumbUp': thumbUp,
       'thumbDown': thumbDown,
+      'isBlocked': isBlocked,
     };
   }
 }

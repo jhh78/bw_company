@@ -27,10 +27,24 @@ Future<CompanyComment> companyCommentThumbUpDown(CompanyComment params, ThumbSta
   return CompanyComment.fromMap(record);
 }
 
-Future reportIllegalPost(String commentId, String contents) async {
+Future reportCompanyIllegalPost(String blockId, String contents) async {
   final pb = PocketBase(API_URL);
 
-  final body = <String, dynamic>{"comment_id": commentId, "contents": contents};
+  final body = <String, dynamic>{
+    "company_id": blockId,
+    "contents": contents,
+  };
+
+  await pb.collection('report').create(body: body);
+}
+
+Future reportCommentIllegalPost(String blockId, String contents) async {
+  final pb = PocketBase(API_URL);
+
+  final body = <String, dynamic>{
+    "comment_id": blockId,
+    "contents": contents,
+  };
 
   await pb.collection('report').create(body: body);
 }

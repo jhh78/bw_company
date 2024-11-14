@@ -8,6 +8,7 @@ class Company {
   int thumbUp;
   int thumbDown;
   String? tags;
+  bool isBlocked;
 
   Company({
     this.id = '',
@@ -17,6 +18,7 @@ class Company {
     this.thumbUp = 0,
     this.thumbDown = 0,
     this.tags = '',
+    this.isBlocked = false,
   });
 
   factory Company.fromRecordModel(RecordModel record) {
@@ -28,6 +30,7 @@ class Company {
       thumbUp: record.data['thumbUp'] ?? 0,
       thumbDown: record.data['thumbDown'] ?? 0,
       tags: record.data['tags'],
+      isBlocked: false,
     );
   }
 
@@ -40,6 +43,7 @@ class Company {
       thumbUp: json['thumbUp'] ?? 0,
       thumbDown: json['thumbDown'] ?? 0,
       tags: json['tags'],
+      isBlocked: json['isBlocked'] ?? false,
     );
   }
 
@@ -52,6 +56,7 @@ class Company {
       'thumbUp': thumbUp,
       'thumbDown': thumbDown,
       'tags': tags,
+      'isBlocked': isBlocked,
     };
   }
 }

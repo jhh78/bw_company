@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/models/localdata.dart';
+import 'package:flutter_application_1/providers/company_info.dart';
+import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
+import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company_comment.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
@@ -16,12 +19,14 @@ const String location = "lib/widgets/comment_detail/report_illegal_post.dart";
 class ReportIllegalPost extends StatefulWidget {
   const ReportIllegalPost({
     super.key,
-    required this.comment,
-    required this.company,
+    required this.screen,
+    this.comment,
+    this.company,
   });
 
-  final CompanyComment comment;
-  final Company company;
+  final String screen;
+  final CompanyComment? comment;
+  final Company? company;
 
   @override
   State<ReportIllegalPost> createState() => _ReportIllegalPostState();
@@ -31,6 +36,8 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
   final TextEditingController _reportContentsController = TextEditingController();
 
   final SystemsProvider _systemsProvider = Get.put(SystemsProvider());
+  final SearchScreenProvider _searchProvider = Get.put(SearchScreenProvider());
+  final CompanyInfoProvider _companyInfoProvider = Get.put(CompanyInfoProvider());
 
   void handleAddReport() async {
     try {
@@ -46,11 +53,18 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
         throw Exception('User data is null');
       }
 
-      userData.commentBlock.add(widget.comment.id);
+      final String? blockId = widget.comment == null ? widget.company?.id : widget.comment?.id;
+
+      userData.commentBlock.add(blockId.toString());
       box.put(LOCAL_DATA, userData);
 
       _systemsProvider.isProcessing.value = true;
-      await reportIllegalPost(widget.comment.id, _reportContentsController.text);
+      if (widget.comment == null) {
+        await reportCompanyIllegalPost(blockId.toString(), _reportContentsController.text);
+      } else {
+        await reportCommentIllegalPost(blockId.toString(), _reportContentsController.text);
+      }
+
       _systemsProvider.initializeData();
       Get.back();
       await Future.delayed(const Duration(milliseconds: 500));
@@ -60,7 +74,27 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
         middleText: 'reportIllegalPostSuccess'.tr,
         barrierDismissible: false,
         onConfirm: () {
-          Get.offAll(() => CorporateInfoScreen(company: widget.company));
+          if (widget.screen == 'searchScreen') {
+            for (var element in _searchProvider.searchList) {
+              if (element.company.id == blockId) {
+                element.company.isBlocked = true;
+                _searchProvider.searchList.refresh();
+              }
+            }
+
+            Get.back();
+          } else if (widget.screen == 'corporateInfoScreen') {
+            for (var element in _companyInfoProvider.comments) {
+              if (element.id == blockId) {
+                element.isBlocked = true;
+                _companyInfoProvider.comments.refresh();
+              }
+            }
+
+            Get.back();
+          } else if (widget.screen == 'commentDetail') {
+            Get.offAll(() => CorporateInfoScreen(company: widget.company!));
+          }
         },
       );
     } catch (e) {

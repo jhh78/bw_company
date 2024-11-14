@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
-import 'package:flutter_application_1/utils/util.dart';
+import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/list_card_item.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 class ListContents extends StatefulWidget {
   const ListContents({super.key});
@@ -21,7 +27,6 @@ class _ListContentsState extends State<ListContents> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels != _scrollController.position.maxScrollExtent) return;
-
       _searchScreenProvider.moreDataLoad();
     });
   }
@@ -51,39 +56,43 @@ class _ListContentsState extends State<ListContents> {
       itemBuilder: (BuildContext context, int index) {
         final SearchScreenModel item = _searchScreenProvider.searchList[index];
 
-        return Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListTile(
-            trailing: const Icon(Icons.arrow_forward, color: Colors.blue), // 오른쪽에 아이콘 추가
-            tileColor: Colors.white, // 타일 배경색
-            selectedTileColor: Colors.blue[50], // 선택된 타일 배경색
-            selected: false, // 타일 선택 여부
-            title: Text(item.company.name),
-            subtitle: Row(
-              children: [
-                const Icon(Icons.thumb_up, color: Colors.blue, size: 20),
-                const SizedBox(width: 4),
-                Text(getNemberFormatString(item.company.thumbUp)),
-                const SizedBox(width: 16),
-                const Icon(Icons.thumb_down, color: Colors.red, size: 20),
-                const SizedBox(width: 4),
-                Text(getNemberFormatString(item.company.thumbDown)),
-              ],
-            ),
-            onTap: () {
-              Get.to(
-                () => CorporateInfoScreen(
-                  company: item.company,
-                ),
-                transition: Transition.rightToLeft,
-                duration: const Duration(milliseconds: 500),
-              );
-            },
-          ),
+        return ListCardItem(
+          id: item.company.id,
+          title: item.company.name,
+          thumbUp: item.company.thumbUp,
+          thumbDown: item.company.thumbDown,
+          handleBlock: (String id) {
+            for (var element in _searchScreenProvider.searchList) {
+              if (element.company.id == id) {
+                Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
+                Localdata? userData = box.get(LOCAL_DATA);
+                if (userData != null) {
+                  userData.commentBlock.add(id);
+                  box.put(LOCAL_DATA, userData);
+                }
+
+                element.company.isBlocked = true;
+                _searchScreenProvider.searchList.refresh();
+              }
+            }
+          },
+          handleReport: (String id) {
+            Get.bottomSheet(
+              ReportIllegalPost(screen: "searchScreen", company: item.company),
+              isScrollControlled: true,
+              isDismissible: false,
+              enableDrag: false,
+            );
+          },
+          nextPageRoute: () {
+            Get.to(
+              () => CorporateInfoScreen(
+                company: item.company,
+              ),
+              transition: Transition.rightToLeft,
+              duration: const Duration(milliseconds: 500),
+            );
+          },
         );
       },
     );

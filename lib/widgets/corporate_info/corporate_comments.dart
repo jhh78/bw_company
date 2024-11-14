@@ -7,7 +7,8 @@ import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
 import 'package:flutter_application_1/utils/constants.dart';
-import 'package:flutter_application_1/utils/util.dart';
+import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/list_card_item.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -76,51 +77,68 @@ class _CorporateCommentsState extends State<CorporateComments> {
   }
 
   Widget renderListTIleItems(CompanyComment comment) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: renderListTileItems(comment),
-    );
-  }
+    return ListCardItem(
+      id: comment.id,
+      title: comment.title,
+      thumbUp: comment.thumbUp,
+      thumbDown: comment.thumbDown,
+      handleBlock: (String id) {
+        log('blockItem: $id');
 
-  Widget renderListTileItems(CompanyComment comment) {
-    if (localdata?.commentBlock.contains(comment.id) ?? false) {
-      return Container(
-        height: 74,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          border: Border.all(color: Colors.blue),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(child: Text("meseageBlocked".tr)),
-      );
-    }
+        for (var element in companyInfoProvider.comments) {
+          if (element.id == id) {
+            Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
+            Localdata? userData = box.get(LOCAL_DATA);
+            if (userData != null) {
+              userData.commentBlock.add(id);
+              box.put(LOCAL_DATA, userData);
+            }
 
-    return ListTile(
-      trailing: const Icon(Icons.arrow_forward, color: Colors.blue),
-      subtitle: Row(
-        children: [
-          const Icon(Icons.thumb_up, color: Colors.blue, size: 20),
-          const SizedBox(width: 4),
-          Text(getNemberFormatString(comment.thumbUp)),
-          const SizedBox(width: 16),
-          const Icon(Icons.thumb_down, color: Colors.red, size: 20),
-          const SizedBox(width: 4),
-          Text(getNemberFormatString(comment.thumbDown)),
-        ],
-      ),
-      onTap: () {
+            element.isBlocked = true;
+            companyInfoProvider.comments.refresh();
+          }
+        }
+      },
+      handleReport: (String id) {
+        Get.bottomSheet(
+          ReportIllegalPost(
+            screen: "corporateInfoScreen",
+            comment: comment,
+          ),
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+        );
+      },
+      nextPageRoute: () {
         Get.to(() => CommentDetailScreen(comment: comment, company: widget.company));
       },
-      title: Hero(
-        tag: 'comment_${comment.id}',
-        child: Material(
-          child: Text(comment.title),
-        ),
-      ),
     );
   }
+
+  // Widget renderListTileItems(CompanyComment comment) {
+  // return ListTile(
+  //   trailing: const Icon(Icons.arrow_forward, color: Colors.blue),
+  //   subtitle: Row(
+  //     children: [
+  //       const Icon(Icons.thumb_up, color: Colors.blue, size: 20),
+  //       const SizedBox(width: 4),
+  //       Text(getNemberFormatString(comment.thumbUp)),
+  //       const SizedBox(width: 16),
+  //       const Icon(Icons.thumb_down, color: Colors.red, size: 20),
+  //       const SizedBox(width: 4),
+  //       Text(getNemberFormatString(comment.thumbDown)),
+  //     ],
+  //   ),
+  //   onTap: () {
+  //     Get.to(() => CommentDetailScreen(comment: comment, company: widget.company));
+  //   },
+  //   title: Hero(
+  //     tag: 'comment_${comment.id}',
+  //     child: Material(
+  //       child: Text(comment.title),
+  //     ),
+  //   ),
+  // );
+  // }
 }

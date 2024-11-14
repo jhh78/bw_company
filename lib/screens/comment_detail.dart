@@ -106,7 +106,11 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
       ),
       onPressed: () {
         Get.bottomSheet(
-          ReportIllegalPost(comment: comment, company: company),
+          ReportIllegalPost(
+            screen: "commentDetail",
+            comment: comment,
+            company: company,
+          ),
           isScrollControlled: true,
           isDismissible: false,
           enableDrag: false,

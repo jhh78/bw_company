@@ -20,15 +20,6 @@ class SearchScreenProvider extends GetxController {
   RxBool isDisplayCompanyAddButton = false.obs;
   RxBool isSearchMode = false.obs;
 
-  Future<void> getAutoCompleatFieldCompanyList() async {
-    final pb = PocketBase(API_URL);
-    final record = await pb.collection("companyNameAutoCompleat").getFullList();
-
-    for (var item in record) {
-      companyList.add(Company.fromRecordModel(item));
-    }
-  }
-
   Future<void> getFirstItems() async {
     searchList.clear();
     await getItems();
@@ -42,12 +33,7 @@ class SearchScreenProvider extends GetxController {
     searchList.clear();
     companyList.clear();
 
-    final futures = <Future>[
-      getAutoCompleatFieldCompanyList(),
-      getFirstItems(),
-    ];
-
-    await Future.wait(futures);
+    await getFirstItems();
     isInitItemLoading.value = false;
   }
 

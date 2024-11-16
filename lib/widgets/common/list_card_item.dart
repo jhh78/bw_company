@@ -48,6 +48,8 @@ class _ListCardItemState extends State<ListCardItem> {
     if (localdata?.commentBlock.contains(widget.id) ?? false) {
       return Container(
         height: 74,
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Colors.grey[300],
           border: Border.all(color: Colors.blue),
@@ -110,7 +112,11 @@ class _ListCardItemState extends State<ListCardItem> {
                 ),
                 onPressed: () => widget.nextPageRoute(),
               ),
-              ExstraMenu(id: widget.id, handleBlock: widget.handleBlock, handleReport: widget.handleReport),
+              ExstraMenu(
+                id: widget.id,
+                handleBlock: widget.handleBlock,
+                handleReport: widget.handleReport,
+              ),
             ],
           ),
         ],

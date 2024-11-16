@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
-import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
-import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company_comment.dart';
 import 'package:flutter_application_1/services/exception.dart';
+import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 const String location = "lib/widgets/comment_detail/report_illegal_post.dart";
 
@@ -46,17 +44,7 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
         return;
       }
 
-      Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
-      Localdata? userData = box.get(LOCAL_DATA);
-
-      if (userData == null) {
-        throw Exception('User data is null');
-      }
-
       final String? blockId = widget.comment == null ? widget.company?.id : widget.comment?.id;
-
-      userData.commentBlock.add(blockId.toString());
-      box.put(LOCAL_DATA, userData);
 
       _systemsProvider.isProcessing.value = true;
       if (widget.comment == null) {
@@ -64,6 +52,8 @@ class _ReportIllegalPostState extends State<ReportIllegalPost> {
       } else {
         await reportCommentIllegalPost(blockId.toString(), _reportContentsController.text);
       }
+
+      await blockContents(blockId.toString());
 
       _systemsProvider.initializeData();
       Get.back();

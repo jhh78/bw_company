@@ -25,3 +25,21 @@ Future<void> createUser() async {
     rethrow;
   }
 }
+
+Future<void> blockContents(String blockId) async {
+  try {
+    Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
+    Localdata? userData = box.get(LOCAL_DATA);
+
+    if (userData == null) {
+      throw Exception('User data is null');
+    }
+
+    userData.commentBlock.add(blockId.toString());
+    box.put(LOCAL_DATA, userData);
+  } catch (e) {
+    writeLogs(location, e.toString());
+    log("$e");
+    rethrow;
+  }
+}

@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
+import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
 import 'package:flutter_application_1/widgets/common/list_card_item.dart';
@@ -82,17 +81,10 @@ class _CorporateCommentsState extends State<CorporateComments> {
       title: comment.title,
       thumbUp: comment.thumbUp,
       thumbDown: comment.thumbDown,
-      handleBlock: (String id) {
-        log('blockItem: $id');
-
+      handleBlock: (String id) async {
         for (var element in companyInfoProvider.comments) {
           if (element.id == id) {
-            Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
-            Localdata? userData = box.get(LOCAL_DATA);
-            if (userData != null) {
-              userData.commentBlock.add(id);
-              box.put(LOCAL_DATA, userData);
-            }
+            await blockContents(id.toString());
 
             element.isBlocked = true;
             companyInfoProvider.comments.refresh();

@@ -82,16 +82,43 @@ class CorporateInfoScreen extends StatelessWidget {
               ),
         ),
         CorporateBarChart(),
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: companyInfoProvider.tags
-              .map(
-                (tags) => Chip(
-                  label: Text(tags.tagName),
-                ),
-              )
-              .toList(),
+        // Wrap(
+        //   spacing: 8.0,
+        //   runSpacing: 4.0,
+        //   children: companyInfoProvider.tags
+        //       .map(
+        //         (tags) => Chip(
+        //           label: Text(tags.tagName),
+        //         ),
+        //       )
+        //       .toList(),
+        // ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: companyInfoProvider.tags
+                .map(
+                  (tags) => Container(
+                    margin: const EdgeInsets.only(right: 5),
+                    child: Chip(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: Colors.blueAccent,
+                          width: 1,
+                        ),
+                      ),
+                      label: Text(
+                        tags.tagName,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.black,
+                            ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
         ),
         CorporateComments(company: company),
         Obx(

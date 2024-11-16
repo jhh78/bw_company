@@ -1,15 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
-import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
 import 'package:flutter_application_1/widgets/common/list_card_item.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 class ListContents extends StatefulWidget {
   const ListContents({super.key});
@@ -61,15 +57,10 @@ class _ListContentsState extends State<ListContents> {
           title: item.company.name,
           thumbUp: item.company.thumbUp,
           thumbDown: item.company.thumbDown,
-          handleBlock: (String id) {
+          handleBlock: (String id) async {
             for (var element in _searchScreenProvider.searchList) {
               if (element.company.id == id) {
-                Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
-                Localdata? userData = box.get(LOCAL_DATA);
-                if (userData != null) {
-                  userData.commentBlock.add(id);
-                  box.put(LOCAL_DATA, userData);
-                }
+                await blockContents(id.toString());
 
                 element.company.isBlocked = true;
                 _searchScreenProvider.searchList.refresh();

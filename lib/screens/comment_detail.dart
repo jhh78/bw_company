@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/users.dart';
@@ -5,8 +7,10 @@ import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
+import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/extra_menu.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/widgets/comment_detail/comment_contents_area.dart';
@@ -46,12 +50,37 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
     super.dispose();
   }
 
+  void handleBlock(String id) async {
+    await blockContents(id);
+    Get.offAll(() => CorporateInfoScreen(company: widget.company));
+  }
+
+  void handleReport(String id) {
+    log('handleReport id: $id');
+    Get.bottomSheet(
+      ReportIllegalPost(
+        screen: "commentDetail",
+        comment: comment,
+        company: company,
+      ),
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+    );
+  }
+
   // Hive 에서 추천 비추천 데이터 땡겨오기캐ㅐ
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: renderAppbarActions(),
+        actions: [
+          ExstraMenu(
+            id: comment.id,
+            handleBlock: handleBlock,
+            handleReport: handleReport,
+          )
+        ],
       ),
       body: Hero(
         tag: 'comment_${comment.id}',

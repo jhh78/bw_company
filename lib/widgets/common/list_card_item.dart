@@ -12,6 +12,7 @@ class ListCardItem extends StatefulWidget {
   const ListCardItem({
     super.key,
     required this.id,
+    required this.writerId,
     required this.title,
     required this.thumbUp,
     required this.thumbDown,
@@ -22,6 +23,7 @@ class ListCardItem extends StatefulWidget {
   });
 
   final String id;
+  final String writerId;
   final String title;
   final int thumbUp;
   final int thumbDown;
@@ -116,6 +118,7 @@ class _ListCardItemState extends State<ListCardItem> {
               ),
               UserActionMenu(
                 id: widget.id,
+                writerId: widget.writerId,
                 handleBlock: widget.handleBlock,
                 handleReport: widget.handleReport,
                 handleDelete: widget.handleDelete,

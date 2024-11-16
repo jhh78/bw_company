@@ -2,6 +2,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 class Company {
   String id;
+  String refUser;
   String name;
   String? homepage;
   String? location;
@@ -13,6 +14,7 @@ class Company {
 
   Company({
     this.id = '',
+    this.refUser = '',
     this.name = '',
     this.homepage,
     this.location,
@@ -54,6 +56,7 @@ class Company {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'refUser': refUser,
       'name': name,
       'homepage': homepage,
       'location': location,

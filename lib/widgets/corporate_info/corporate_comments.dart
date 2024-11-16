@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
+import 'package:flutter_application_1/models/collections/users.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
@@ -79,8 +80,11 @@ class _CorporateCommentsState extends State<CorporateComments> {
   }
 
   Widget renderListTIleItems(CompanyComment comment) {
+    final refUser = Users.fromString(comment.refUser);
+
     return ListCardItem(
       id: comment.id,
+      writerId: refUser.id,
       title: comment.title,
       thumbUp: comment.thumbUp,
       thumbDown: comment.thumbDown,

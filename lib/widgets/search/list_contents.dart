@@ -56,14 +56,9 @@ class _ListContentsState extends State<ListContents> {
       itemBuilder: (BuildContext context, int index) {
         final SearchScreenModel item = _searchScreenProvider.searchList[index];
 
-        // if (item.company.extendsData.isEmpty) {
-        //   log('refUser is blank');
-        // } else {
-        //   log(item.company.extendsData['refUser'][0].id);
-        // }
-
         return ListCardItem(
           id: item.company.id,
+          writerId: item.company.extendsData.isEmpty ? '' : item.company.extendsData['refUser'][0].id,
           title: item.company.name,
           thumbUp: item.company.thumbUp,
           thumbDown: item.company.thumbDown,

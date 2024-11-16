@@ -54,11 +54,13 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
   // Hive 에서 추천 비추천 데이터 땡겨오기캐ㅐ
   @override
   Widget build(BuildContext context) {
+    final refUser = Users.fromString(comment.refUser);
     return Scaffold(
       appBar: AppBar(
         actions: [
           UserActionMenu(
             id: comment.id,
+            writerId: refUser.id,
             handleBlock: (String id) async {
               await blockContents(id);
               Get.offAll(() => CorporateInfoScreen(company: widget.company));

@@ -12,9 +12,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
-// TODO ::: 회사 삭제
-// TODO ::: 댓글 삭제
-
 // ph2
 // TODO ::: 디자인 약간 손봐야됨
 // TODO ::: 애플 결제 부분 추가

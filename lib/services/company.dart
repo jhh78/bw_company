@@ -63,8 +63,15 @@ Future<void> deleteComment(String id) async {
 
 Future<void> registerCompany(Company company) async {
   try {
+    Box<Localdata> box = Hive.box<Localdata>(SYSTEM_BOX);
+    final userData = box.get(LOCAL_DATA);
+
+    if (userData == null) {
+      throw Exception('User data is null');
+    }
+
     final pb = PocketBase(API_URL);
-    log('registerCompany: ${company.toJson()}');
+    company.refUser = userData.uuid;
     final record = await pb.collection('company').create(body: company.toJson());
     company.id = record.id;
   } catch (e) {

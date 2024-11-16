@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/localdata.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 const String _block = 'block';
 const String _report = 'report';
@@ -9,15 +14,40 @@ class UserActionMenu extends StatelessWidget {
   const UserActionMenu({
     super.key,
     required this.id,
+    required this.writerId,
     required this.handleBlock,
     required this.handleReport,
     required this.handleDelete,
   });
 
-  final Function handleBlock;
   final String id;
+  final String writerId;
+  final Function handleBlock;
   final Function handleReport;
   final Function handleDelete;
+
+  PopupMenuItem<String>? renderDeleteButton() {
+    Box box = Hive.box<Localdata>(SYSTEM_BOX);
+    Localdata? localdata = box.get(LOCAL_DATA);
+
+    log('UserActionMenu $writerId ${localdata?.uuid}');
+    if (writerId == localdata?.uuid) {
+      return PopupMenuItem<String>(
+        value: _delete,
+        child: Row(
+          children: [
+            const Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
+            const SizedBox(width: 8),
+            Text('delete'.tr),
+          ],
+        ),
+      );
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,19 +100,7 @@ class UserActionMenu extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem<String>(
-          value: _delete,
-          child: Row(
-            children: [
-              const Icon(
-                Icons.remove_circle_outline,
-                color: Colors.red,
-              ),
-              const SizedBox(width: 8),
-              Text('deleteButton'.tr),
-            ],
-          ),
-        ),
+        if (renderDeleteButton() != null) renderDeleteButton()!,
       ],
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
@@ -21,7 +19,6 @@ Future<void> createUser() async {
     box.put(LOCAL_DATA, localdata);
   } catch (e) {
     writeLogs(location, e.toString());
-    log("$e");
     rethrow;
   }
 }
@@ -39,7 +36,6 @@ Future<void> blockContents(String blockId) async {
     box.put(LOCAL_DATA, userData);
   } catch (e) {
     writeLogs(location, e.toString());
-    log("$e");
     rethrow;
   }
 }

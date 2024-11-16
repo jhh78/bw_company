@@ -82,17 +82,6 @@ class CorporateInfoScreen extends StatelessWidget {
               ),
         ),
         CorporateBarChart(),
-        // Wrap(
-        //   spacing: 8.0,
-        //   runSpacing: 4.0,
-        //   children: companyInfoProvider.tags
-        //       .map(
-        //         (tags) => Chip(
-        //           label: Text(tags.tagName),
-        //         ),
-        //       )
-        //       .toList(),
-        // ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(

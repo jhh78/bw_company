@@ -68,6 +68,7 @@ class SearchScreenProvider extends GetxController {
     final resultList = await pb.collection('searchScreenCompanyList').getList(
           page: page.value,
           perPage: perPage.value,
+          expand: 'refUser',
         );
 
     // 반복문을 사용하여 resultList의 items를 searchList에 추가

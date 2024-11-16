@@ -9,6 +9,7 @@ class Company {
   int thumbDown;
   String? tags;
   bool isBlocked;
+  Map<String, dynamic> extendsData;
 
   Company({
     this.id = '',
@@ -19,6 +20,7 @@ class Company {
     this.thumbDown = 0,
     this.tags = '',
     this.isBlocked = false,
+    this.extendsData = const {},
   });
 
   factory Company.fromRecordModel(RecordModel record) {
@@ -31,6 +33,7 @@ class Company {
       thumbDown: record.data['thumbDown'] ?? 0,
       tags: record.data['tags'],
       isBlocked: false,
+      extendsData: record.expand,
     );
   }
 
@@ -44,6 +47,7 @@ class Company {
       thumbDown: json['thumbDown'] ?? 0,
       tags: json['tags'],
       isBlocked: json['isBlocked'] ?? false,
+      extendsData: json['extendsData'] ?? {},
     );
   }
 
@@ -57,6 +61,7 @@ class Company {
       'thumbDown': thumbDown,
       'tags': tags,
       'isBlocked': isBlocked,
+      'extendsData': extendsData,
     };
   }
 }

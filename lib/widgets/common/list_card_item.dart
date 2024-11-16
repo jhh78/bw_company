@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/utils/util.dart';
-import 'package:flutter_application_1/widgets/common/extra_menu.dart';
+import 'package:flutter_application_1/widgets/common/user_action_menu.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -18,6 +18,7 @@ class ListCardItem extends StatefulWidget {
     required this.handleBlock,
     required this.handleReport,
     required this.nextPageRoute,
+    required this.handleDelete,
   });
 
   final String id;
@@ -27,6 +28,7 @@ class ListCardItem extends StatefulWidget {
   final Function handleBlock;
   final Function handleReport;
   final Function nextPageRoute;
+  final Function handleDelete;
 
   @override
   State<ListCardItem> createState() => _ListCardItemState();
@@ -112,10 +114,11 @@ class _ListCardItemState extends State<ListCardItem> {
                 ),
                 onPressed: () => widget.nextPageRoute(),
               ),
-              ExstraMenu(
+              UserActionMenu(
                 id: widget.id,
                 handleBlock: widget.handleBlock,
                 handleReport: widget.handleReport,
+                handleDelete: widget.handleDelete,
               ),
             ],
           ),

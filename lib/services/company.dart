@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
 import 'package:flutter_application_1/models/localdata.dart';
+import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:hive/hive.dart';
 import 'package:pocketbase/pocketbase.dart';
+
+const String location = 'services/company.dart';
 
 Future<void> registerComment(CompanyRegisterFormModel params) async {
   try {
@@ -43,6 +46,17 @@ Future<void> registerComment(CompanyRegisterFormModel params) async {
       await pb.collection('company').update(record.id, body: params.company.toJson());
     }
   } catch (e) {
+    writeLogs(location, e.toString());
+    rethrow;
+  }
+}
+
+Future<void> deleteComment(String id) async {
+  try {
+    final pb = PocketBase(API_URL);
+    await pb.collection('comment').delete(id);
+  } catch (e) {
+    writeLogs(location, e.toString());
     rethrow;
   }
 }
@@ -54,6 +68,17 @@ Future<void> registerCompany(Company company) async {
     final record = await pb.collection('company').create(body: company.toJson());
     company.id = record.id;
   } catch (e) {
-    log('registerCompany error: $e');
+    writeLogs(location, e.toString());
+    rethrow;
+  }
+}
+
+Future<void> deleteCompany(String id) async {
+  try {
+    final pb = PocketBase(API_URL);
+    await pb.collection('company').delete(id);
+  } catch (e) {
+    writeLogs(location, e.toString());
+    rethrow;
   }
 }

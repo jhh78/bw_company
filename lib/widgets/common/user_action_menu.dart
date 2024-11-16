@@ -1,20 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 const String _block = 'block';
 const String _report = 'report';
+const String _delete = 'delete';
 
-class ExstraMenu extends StatelessWidget {
-  const ExstraMenu({
+class UserActionMenu extends StatelessWidget {
+  const UserActionMenu({
     super.key,
-    required this.handleBlock,
     required this.id,
+    required this.handleBlock,
     required this.handleReport,
+    required this.handleDelete,
   });
 
   final Function handleBlock;
   final String id;
   final Function handleReport;
+  final Function handleDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,9 @@ class ExstraMenu extends StatelessWidget {
             break;
           case _report:
             handleReport(id);
+            break;
+          case _delete:
+            handleDelete(id);
             break;
         }
       },
@@ -56,11 +64,24 @@ class ExstraMenu extends StatelessWidget {
           child: Row(
             children: [
               const Icon(
-                Icons.report_gmailerrorred,
+                Icons.report_problem_outlined,
                 color: Colors.red,
               ),
               const SizedBox(width: 8),
               Text('reportIllegalPost'.tr),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: _delete,
+          child: Row(
+            children: [
+              const Icon(
+                Icons.remove_circle_outline,
+                color: Colors.red,
+              ),
+              const SizedBox(width: 8),
+              Text('deleteButton'.tr),
             ],
           ),
         ),

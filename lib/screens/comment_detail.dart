@@ -7,10 +7,13 @@ import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/providers/systems.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
+import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
-import 'package:flutter_application_1/widgets/common/extra_menu.dart';
+import 'package:flutter_application_1/widgets/common/custom_bottom_sheet.dart';
+import 'package:flutter_application_1/widgets/common/custom_confirm_dialog.dart';
+import 'package:flutter_application_1/widgets/common/user_action_menu.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/widgets/comment_detail/comment_contents_area.dart';
@@ -50,35 +53,40 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
     super.dispose();
   }
 
-  void handleBlock(String id) async {
-    await blockContents(id);
-    Get.offAll(() => CorporateInfoScreen(company: widget.company));
-  }
-
-  void handleReport(String id) {
-    log('handleReport id: $id');
-    Get.bottomSheet(
-      ReportIllegalPost(
-        screen: "commentDetail",
-        comment: comment,
-        company: company,
-      ),
-      isScrollControlled: true,
-      isDismissible: false,
-      enableDrag: false,
-    );
-  }
-
   // Hive 에서 추천 비추천 데이터 땡겨오기캐ㅐ
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          ExstraMenu(
+          UserActionMenu(
             id: comment.id,
-            handleBlock: handleBlock,
-            handleReport: handleReport,
+            handleBlock: (String id) async {
+              await blockContents(id);
+              Get.offAll(() => CorporateInfoScreen(company: widget.company));
+            },
+            handleReport: (String id) {
+              CustomBottomSheet(
+                  widget: ReportIllegalPost(
+                screen: "commentDetail",
+                comment: comment,
+                company: company,
+              )).show();
+            },
+            handleDelete: (String id) async {
+              CustomConfirmDialog(
+                title: 'deleteConfirmTitleMessage'.tr,
+                subtitle: 'deleteConfirmSubtitleMessage'.tr,
+                onConfirm: () async {
+                  await deleteComment(id);
+                  Get.offAll(
+                    () => CorporateInfoScreen(company: company),
+                    transition: Transition.rightToLeft,
+                  );
+                  Get.back();
+                },
+              ).show();
+            },
           )
         ],
       ),

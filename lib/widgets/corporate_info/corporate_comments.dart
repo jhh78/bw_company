@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/collections/company_comment.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
+import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/custom_bottom_sheet.dart';
+import 'package:flutter_application_1/widgets/common/custom_confirm_dialog.dart';
 import 'package:flutter_application_1/widgets/common/list_card_item.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -92,45 +97,27 @@ class _CorporateCommentsState extends State<CorporateComments> {
         }
       },
       handleReport: (String id) {
-        Get.bottomSheet(
-          ReportIllegalPost(
+        CustomBottomSheet(
+          widget: ReportIllegalPost(
             screen: "corporateInfoScreen",
             comment: comment,
           ),
-          isScrollControlled: true,
-          isDismissible: false,
-          enableDrag: false,
-        );
+        ).show();
+      },
+      handleDelete: (String id) async {
+        CustomConfirmDialog(
+          title: 'deleteConfirmTitleMessage'.tr,
+          subtitle: 'deleteConfirmSubtitleMessage'.tr,
+          onConfirm: () async {
+            await deleteComment(id);
+            companyInfoProvider.getInitItems(widget.company.id);
+            Get.back();
+          },
+        ).show();
       },
       nextPageRoute: () {
         Get.to(() => CommentDetailScreen(comment: comment, company: widget.company));
       },
     );
   }
-
-  // Widget renderListTileItems(CompanyComment comment) {
-  // return ListTile(
-  //   trailing: const Icon(Icons.arrow_forward, color: Colors.blue),
-  //   subtitle: Row(
-  //     children: [
-  //       const Icon(Icons.thumb_up, color: Colors.blue, size: 20),
-  //       const SizedBox(width: 4),
-  //       Text(getNemberFormatString(comment.thumbUp)),
-  //       const SizedBox(width: 16),
-  //       const Icon(Icons.thumb_down, color: Colors.red, size: 20),
-  //       const SizedBox(width: 4),
-  //       Text(getNemberFormatString(comment.thumbDown)),
-  //     ],
-  //   ),
-  //   onTap: () {
-  //     Get.to(() => CommentDetailScreen(comment: comment, company: widget.company));
-  //   },
-  //   title: Hero(
-  //     tag: 'comment_${comment.id}',
-  //     child: Material(
-  //       child: Text(comment.title),
-  //     ),
-  //   ),
-  // );
-  // }
 }

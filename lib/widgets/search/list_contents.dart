@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
 import 'package:flutter_application_1/screens/corporate_info.dart';
+import 'package:flutter_application_1/screens/search.dart';
+import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
+import 'package:flutter_application_1/widgets/common/custom_bottom_sheet.dart';
+import 'package:flutter_application_1/widgets/common/custom_confirm_dialog.dart';
 import 'package:flutter_application_1/widgets/common/list_card_item.dart';
 import 'package:get/get.dart';
 
@@ -52,6 +56,12 @@ class _ListContentsState extends State<ListContents> {
       itemBuilder: (BuildContext context, int index) {
         final SearchScreenModel item = _searchScreenProvider.searchList[index];
 
+        // if (item.company.extendsData.isEmpty) {
+        //   log('refUser is blank');
+        // } else {
+        //   log(item.company.extendsData['refUser'][0].id);
+        // }
+
         return ListCardItem(
           id: item.company.id,
           title: item.company.name,
@@ -68,12 +78,19 @@ class _ListContentsState extends State<ListContents> {
             }
           },
           handleReport: (String id) {
-            Get.bottomSheet(
-              ReportIllegalPost(screen: "searchScreen", company: item.company),
-              isScrollControlled: true,
-              isDismissible: false,
-              enableDrag: false,
-            );
+            CustomBottomSheet(
+              widget: ReportIllegalPost(screen: "searchScreen", company: item.company),
+            ).show();
+          },
+          handleDelete: (String id) async {
+            CustomConfirmDialog(
+              title: 'deleteConfirmTitleMessage'.tr,
+              subtitle: 'deleteConfirmSubtitleMessage'.tr,
+              onConfirm: () async {
+                await deleteCompany(id);
+                Get.offAll(() => const SearchScreen());
+              },
+            ).show();
           },
           nextPageRoute: () {
             Get.to(

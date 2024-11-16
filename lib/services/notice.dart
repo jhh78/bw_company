@@ -25,7 +25,6 @@ Future<RecordModel> getNoticeData(String type) async {
         );
   } catch (e) {
     writeLogs(location, e.toString());
-    log(e.toString());
     rethrow;
   }
 }

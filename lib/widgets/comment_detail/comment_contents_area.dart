@@ -15,10 +15,7 @@ class CommentContentsArea extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(),
           ),
           const SizedBox(height: 5),
           Row(
@@ -32,7 +29,7 @@ class CommentContentsArea extends StatelessWidget {
                   ),
                   child: Text(
                     contents,
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
               ),

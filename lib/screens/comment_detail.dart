@@ -58,35 +58,38 @@ class CommentDetailScreenState extends State<CommentDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          UserActionMenu(
-            id: comment.id,
-            writerId: refUser.id,
-            handleBlock: (String id) async {
-              await blockContents(id);
-              Get.offAll(() => CorporateInfoScreen(company: widget.company));
-            },
-            handleReport: (String id) {
-              CustomBottomSheet(
-                  widget: ReportIllegalPost(
-                screen: "commentDetail",
-                comment: comment,
-                company: company,
-              )).show();
-            },
-            handleDelete: (String id) async {
-              CustomConfirmDialog(
-                title: 'deleteConfirmTitleMessage'.tr,
-                subtitle: 'deleteConfirmSubtitleMessage'.tr,
-                onConfirm: () async {
-                  await deleteComment(id);
-                  Get.offAll(
-                    () => CorporateInfoScreen(company: company),
-                    transition: Transition.rightToLeft,
-                  );
-                  Get.back();
-                },
-              ).show();
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: UserActionMenu(
+              id: comment.id,
+              writerId: refUser.id,
+              handleBlock: (String id) async {
+                await blockContents(id);
+                Get.offAll(() => CorporateInfoScreen(company: widget.company));
+              },
+              handleReport: (String id) {
+                CustomBottomSheet(
+                    widget: ReportIllegalPost(
+                  screen: "commentDetail",
+                  comment: comment,
+                  company: company,
+                )).show();
+              },
+              handleDelete: (String id) async {
+                CustomConfirmDialog(
+                  title: 'deleteConfirmTitleMessage'.tr,
+                  subtitle: 'deleteConfirmSubtitleMessage'.tr,
+                  onConfirm: () async {
+                    await deleteComment(id);
+                    Get.offAll(
+                      () => CorporateInfoScreen(company: company),
+                      transition: Transition.rightToLeft,
+                    );
+                    Get.back();
+                  },
+                ).show();
+              },
+            ),
           )
         ],
       ),

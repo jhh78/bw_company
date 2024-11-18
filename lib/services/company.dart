@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_application_1/models/collections/company.dart';
 import 'package:flutter_application_1/models/company_register_form_model.dart';
 import 'package:flutter_application_1/models/localdata.dart';

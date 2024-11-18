@@ -53,8 +53,9 @@ class UserActionMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: const Icon(
-        Icons.more_vert,
+        Icons.menu,
         color: Colors.black,
+        size: 28,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

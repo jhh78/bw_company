@@ -41,6 +41,7 @@ Future<void> registerComment(CompanyRegisterFormModel params) async {
       }
 
       params.company.tags = newTags.toSet().toList().join(SEARCH_TAG_SEPARATOR);
+      params.company.refUser = userData.uuid;
       await pb.collection('company').update(record.id, body: params.company.toJson());
     }
   } catch (e) {

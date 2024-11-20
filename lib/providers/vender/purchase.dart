@@ -13,6 +13,7 @@ class PurchaseManager extends GetxService {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   late List<ProductDetails> _products;
+  RxBool isProcessing = false.obs;
 
   @override
   void onInit() {
@@ -49,6 +50,7 @@ class PurchaseManager extends GetxService {
           // 구매 완료 처리
           log("Purchase successful: ${purchaseDetails.productID}");
           _inAppPurchase.completePurchase(purchaseDetails);
+          isProcessing.value = false;
         }
       }
     } catch (error) {
@@ -57,7 +59,7 @@ class PurchaseManager extends GetxService {
     }
   }
 
-  void initialize() async {
+  Future<void> initialize() async {
     try {
       final purchaseUpdated = _inAppPurchase.purchaseStream;
       _subscription = purchaseUpdated.listen((purchaseDetailsList) {
@@ -84,9 +86,10 @@ class PurchaseManager extends GetxService {
 
   Future<void> buyProduct(int index) async {
     try {
-      final ProductDetails productDetails = _products[index];
+      isProcessing.value = true;
+      ProductDetails productDetails = _products[index];
       final PurchaseParam purchaseParam = PurchaseParam(productDetails: productDetails);
-      _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+      await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
     } catch (error) {
       writeLogs(location, error.toString());
       rethrow;

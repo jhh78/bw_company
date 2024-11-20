@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/help.dart';
 import 'package:flutter_application_1/screens/member_exit.dart';
@@ -79,18 +77,16 @@ class SideMenu extends StatelessWidget {
               );
             },
           ),
-          // TODO ::: 앱스토어 앱이 등록되면 해제
-          if (Platform.isAndroid)
-            ListTile(
-              leading: const Icon(Icons.payment),
-              title: Text('naviSupport'.tr),
-              onTap: () {
-                Get.to(
-                  () => const SupportScreen(),
-                  transition: Transition.fade,
-                );
-              },
-            ),
+          ListTile(
+            leading: const Icon(Icons.payment),
+            title: Text('naviSupport'.tr),
+            onTap: () {
+              Get.to(
+                () => const SupportScreen(),
+                transition: Transition.fade,
+              );
+            },
+          ),
         ],
       ),
     );

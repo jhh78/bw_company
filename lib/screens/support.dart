@@ -120,17 +120,7 @@ class _SupportScreenState extends State<SupportScreen> {
     );
   }
 
-  // TODO ::: 앱스토어 결제문제 해결되면 조건 해제
   List<Widget> renderButtonArea() {
-    if (Platform.isIOS) {
-      return [
-        ElevatedButton(
-          onPressed: loadAd,
-          child: Text('viewAD'.tr),
-        ),
-      ];
-    }
-
     return [
       ElevatedButton(
         onPressed: loadAd,
@@ -144,7 +134,7 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   Widget _renderLoadingOverlap() {
-    if (!adManager.isAdReady.value) return const SizedBox.shrink();
+    if (!adManager.isAdReady.value || !_purchaseManager.isProcessing.value) return const SizedBox.shrink();
     return const OrverlapLoading();
   }
 

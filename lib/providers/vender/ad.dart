@@ -15,15 +15,10 @@ class ADManager extends GetxService {
   String _getADUnitId() {
     if (Platform.isAndroid) {
       return "ca-app-pub-3940256099942544/5224354917";
+      // return kReleaseMode ? "ca-app-pub-9674517651101637/4032962043" : "ca-app-pub-3940256099942544/5224354917";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/1712485313";
+      return kReleaseMode ? "ca-app-pub-9674517651101637/5809078146" : "ca-app-pub-3940256099942544/1712485313";
     }
-
-    // if (Platform.isAndroid) {
-    //   return kReleaseMode ? "ca-app-pub-9674517651101637/4032962043" : "ca-app-pub-3940256099942544/5224354917";
-    // } else if (Platform.isIOS) {
-    //   return kReleaseMode ? "ca-app-pub-9674517651101637/5809078146" : "ca-app-pub-3940256099942544/1712485313";
-    // }
 
     throw Exception("Unsupported platform");
   }

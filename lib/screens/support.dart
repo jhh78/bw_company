@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
@@ -119,6 +121,15 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   List<Widget> renderButtonArea() {
+    if (Platform.isIOS) {
+      return [
+        ElevatedButton(
+          onPressed: loadAd,
+          child: Text('viewAD'.tr),
+        ),
+      ];
+    }
+
     return [
       ElevatedButton(
         onPressed: loadAd,

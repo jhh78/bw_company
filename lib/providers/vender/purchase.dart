@@ -95,4 +95,60 @@ class PurchaseManager extends GetxService {
       rethrow;
     }
   }
+
+  // TODO ::: 구글, 애플 영수증 검증 로직작성 필요
+  // Future<void> verifyPurchase(PurchaseDetails purchaseDetails) async {
+  // final String receipt = purchaseDetails.verificationData.serverVerificationData;
+  // final String sharedSecret = '1958edc819604a10ae411e3b20128625'; // 앱의 공유 비밀
+
+  // // 프로덕션 환경에서 영수증 검증
+  // final response = await http.post(
+  //   Uri.parse('https://buy.itunes.apple.com/verifyReceipt'),
+  //   headers: <String, String>{
+  //     'Content-Type': 'application/json; charset=UTF-8',
+  //   },
+  //   body: jsonEncode(<String, String>{
+  //     'receipt-data': receipt,
+  //     'password': sharedSecret,
+  //   }),
+  // );
+
+  // if (response.statusCode == 200) {
+  //   final Map<String, dynamic> responseBody = jsonDecode(response.body);
+  //   if (responseBody['status'] == 21007) {
+  //     // 프로덕션 환경에서 검증 실패 시 테스트 환경에서 다시 검증
+  //     final sandboxResponse = await http.post(
+  //       Uri.parse('https://sandbox.itunes.apple.com/verifyReceipt'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //       },
+  //       body: jsonEncode(<String, String>{
+  //         'receipt-data': receipt,
+  //         'password': sharedSecret,
+  //       }),
+  //     );
+
+  //     if (sandboxResponse.statusCode == 200) {
+  //       final Map<String, dynamic> sandboxResponseBody = jsonDecode(sandboxResponse.body);
+  //       if (sandboxResponseBody['status'] == 0) {
+  //         // 영수증 검증 성공
+  //         log("Receipt verification successful (Sandbox)");
+  //       } else {
+  //         // 영수증 검증 실패
+  //         log("Receipt verification failed (Sandbox): ${sandboxResponseBody['status']}");
+  //       }
+  //     } else {
+  //       log("Error verifying receipt (Sandbox): ${sandboxResponse.statusCode}");
+  //     }
+  //   } else if (responseBody['status'] == 0) {
+  //     // 영수증 검증 성공
+  //     log("Receipt verification successful (Production)");
+  //   } else {
+  //     // 영수증 검증 실패
+  //     log("Receipt verification failed (Production): ${responseBody['status']}");
+  //   }
+  // } else {
+  //   log("Error verifying receipt (Production): ${response.statusCode}");
+  // }
+  // }
 }

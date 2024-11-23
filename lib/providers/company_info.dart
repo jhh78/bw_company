@@ -99,4 +99,18 @@ class CompanyInfoProvider extends GetxController {
       isAppendItemLoading.value = false;
     }
   }
+
+  Future<void> requestCompanyInfoModify(String companyId, String contents) async {
+    try {
+      final pb = PocketBase(API_URL);
+      await pb.collection('userRequest').create(body: {
+        "refCompany": companyId,
+        "contents": contents,
+      });
+    } catch (e) {
+      writeLogs(location, e.toString());
+    } finally {
+      isAppendItemLoading.value = false;
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/search_screen_model.dart';
 import 'package:flutter_application_1/providers/search_screen.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_application_1/screens/corporate_info.dart';
 import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/user.dart';
+import 'package:flutter_application_1/widgets/comment_detail/modify_request.dart';
 import 'package:flutter_application_1/widgets/comment_detail/report_illegal_post.dart';
 import 'package:flutter_application_1/widgets/common/custom_bottom_sheet.dart';
 import 'package:flutter_application_1/widgets/common/custom_confirm_dialog.dart';
@@ -95,6 +98,11 @@ class _ListContentsState extends State<ListContents> {
               transition: Transition.rightToLeft,
               duration: const Duration(milliseconds: 500),
             );
+          },
+          handleModify: (String id) {
+            CustomBottomSheet(
+              widget: ModifyRequest(company: item.company),
+            ).show();
           },
         );
       },

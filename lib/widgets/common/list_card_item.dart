@@ -20,6 +20,7 @@ class ListCardItem extends StatefulWidget {
     required this.handleReport,
     required this.nextPageRoute,
     required this.handleDelete,
+    this.handleModify,
   });
 
   final String id;
@@ -31,6 +32,7 @@ class ListCardItem extends StatefulWidget {
   final Function handleReport;
   final Function nextPageRoute;
   final Function handleDelete;
+  final Function? handleModify;
 
   @override
   State<ListCardItem> createState() => _ListCardItemState();
@@ -122,6 +124,7 @@ class _ListCardItemState extends State<ListCardItem> {
                 handleBlock: widget.handleBlock,
                 handleReport: widget.handleReport,
                 handleDelete: widget.handleDelete,
+                handleModify: widget.handleModify,
               ),
             ],
           ),

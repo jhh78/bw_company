@@ -36,21 +36,27 @@ class _CorporateRegisterState extends State<CorporateRegister> {
     systemsProvider.formValidate.clear();
   }
 
-  Widget renderTextField(BuildContext context, String label, String validateKey,
-      {String? helperText, bool readOnly = false, TextEditingController? controller}) {
-    return Obx(() => Container(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: TextField(
-            readOnly: readOnly,
-            controller: controller,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: label,
-              errorText: systemsProvider.formValidate[validateKey] == true ? "requiredField".tr : null,
-              helperText: helperText,
-            ),
-          ),
-        ));
+  Widget renderTextField(
+    BuildContext context,
+    String label,
+    String? errorText,
+    TextEditingController controller, {
+    String? helperText,
+    bool readOnly = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextField(
+        readOnly: readOnly,
+        controller: controller,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: label,
+          errorText: errorText,
+          helperText: helperText,
+        ),
+      ),
+    );
   }
 
   void _registerCompany() async {
@@ -59,6 +65,11 @@ class _CorporateRegisterState extends State<CorporateRegister> {
 
       if (_companyNameController.text.isEmpty) {
         systemsProvider.formValidate['companyName'] = true;
+      }
+
+      // 해당회사가 존재하는지 확인
+      if (await checkDuplicateCompany(_companyNameController.text)) {
+        systemsProvider.formValidate['duplicate'] = true;
       }
 
       if (_companyHomepageController.text.isEmpty || !isValidUrl(_companyHomepageController.text)) {
@@ -72,10 +83,10 @@ class _CorporateRegisterState extends State<CorporateRegister> {
       if (systemsProvider.formValidate.isNotEmpty) {
         CustomSnackbar(
           title: 'errorText'.tr,
-          message: "needRequiredField".tr,
+          message: "checkInputData".tr,
           status: ObserveSnackbarStatus.ERROR,
+          duration: 2,
         ).showSnackbar();
-
         return;
       }
 
@@ -113,26 +124,35 @@ class _CorporateRegisterState extends State<CorporateRegister> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              renderTextField(
-                context,
-                "registerCompanyScreenNeedCompanyName".tr,
-                'companyName',
-                helperText: "registerCompanyScreenNeedCompanyName".tr,
-                controller: _companyNameController,
-              ),
-              renderTextField(
-                context,
-                "registerCompanyScreenNeedCompanyHomePage".tr,
-                'companyHomepage',
-                helperText: "registerCompanyScreenNeedCompanyHomePageHelpText".tr,
-                controller: _companyHomepageController,
-              ),
-              renderTextField(
-                context,
-                "registerCompanyScreenNeedCompanyLocation".tr,
-                'companyLocation',
-                helperText: "registerCompanyScreenNeedCompanyLocationHelpText".tr,
-                controller: _companyLocationController,
+              Obx(() => renderTextField(
+                    context,
+                    "registerCompanyScreenNeedCompanyName".tr,
+                    () {
+                      if (systemsProvider.formValidate["companyName"] == true) {
+                        return "requiredField".tr;
+                      } else if (systemsProvider.formValidate["duplicate"] == true) {
+                        return "duplicateCompany".tr;
+                      }
+                      return null;
+                    }(),
+                    _companyNameController,
+                    helperText: "registerCompanyScreenNeedCompanyName".tr,
+                  )),
+              Obx(() => renderTextField(
+                    context,
+                    "registerCompanyScreenNeedCompanyHomePage".tr,
+                    systemsProvider.formValidate["companyHomepage"] == true ? "requiredField".tr : null,
+                    _companyHomepageController,
+                    helperText: "registerCompanyScreenNeedCompanyHomePageHelpText".tr,
+                  )),
+              Obx(
+                () => renderTextField(
+                  context,
+                  "registerCompanyScreenNeedCompanyLocation".tr,
+                  systemsProvider.formValidate["companyLocation"] == true ? "requiredField".tr : null,
+                  _companyLocationController,
+                  helperText: "registerCompanyScreenNeedCompanyLocationHelpText".tr,
+                ),
               ),
               SearchTagInputField(tags: "", onTagChange: _changeTagList),
               const SizedBox(height: 20),

@@ -29,7 +29,7 @@ void main() async {
 }
 
 // TODO ::: 명예의 전당 추가
-// 애플 결제문제 해결
+// TODO ::: 애플 결제문제 해결
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

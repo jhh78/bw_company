@@ -8,11 +8,13 @@ class CustomSnackbar {
   final String title;
   final String message;
   final Enum status;
+  final int duration;
 
   CustomSnackbar({
     required this.title,
     required this.message,
     required this.status,
+    this.duration = 3,
   });
 
   void showSnackbar() {
@@ -39,7 +41,7 @@ class CustomSnackbar {
       title,
       message,
       snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: duration),
       backgroundColor: backgroundColor,
       colorText: Colors.white,
       margin: const EdgeInsets.all(10),

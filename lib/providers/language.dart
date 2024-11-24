@@ -71,9 +71,11 @@ class Languages extends Translations {
 
           // Exception
           'errorText': '에러',
+          'duplicateCompany': '이미 등록된 회사입니다.',
           'alreadyExistTag': '이미 등록된 태그입니다.',
           'unknownExcetipn': '알수없는 오류가 발생하였습니다.',
           'needRequiredField': '필수항목을 입력해 주세요',
+          'checkInputData': '전송에 실패했습니다.\n입력된 데이터를 확인해 주세요',
           'registeredItems': '이미 등록된 항목입니다.',
           'adLoadFailed': '광고 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
           'productLoadFailed': '상품 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
@@ -146,9 +148,11 @@ class Languages extends Translations {
 
           // Exception
           'errorText': 'エラー',
+          'duplicateCompany': 'すでに登録された会社です。',
           'alreadyExistTag': '既に登録されたタグです。',
           'unknownExcetipn': '不明なエラーが発生しました。',
           'needRequiredField': '必須項目を入力してください',
+          'checkInputData': '送信に失敗しました。\n入力されたデータを確認してください',
           'registeredItems': 'すでに登録されたアイテムです。',
           'adLoadFailed': '広告のロードに失敗しました。\nしばらくしてから再度お試しください。',
           'productLoadFailed': '商品のロードに失敗しました。\nしばらくしてから再度お試しください。',
@@ -221,9 +225,11 @@ class Languages extends Translations {
 
           // Exception
           'errorText': 'Error',
+          'duplicateCompany': 'The company is already registered.',
           'alreadyExistTag': 'The tag is already registered.',
           'unknownExcetipn': 'An unknown error has occurred.',
           'needRequiredField': 'Please enter the required field',
+          'checkInputData': 'Failed to send.\nPlease check the entered data',
           'registeredItems': 'This item is already registered.',
           'adLoadFailed': 'Failed to load ad.\nPlease try again later.',
           'productLoadFailed': 'Failed to load product.\nPlease try again later.',

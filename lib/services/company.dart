@@ -79,6 +79,20 @@ Future<void> registerCompany(Company company) async {
   }
 }
 
+Future<bool> checkDuplicateCompany(String companyName) async {
+  try {
+    final pb = PocketBase(API_URL);
+    final record = await pb.collection('company').getList(
+          filter: "name='$companyName'",
+        );
+
+    return record.items.isNotEmpty;
+  } catch (e) {
+    writeLogs(location, e.toString());
+    return false;
+  }
+}
+
 Future<void> deleteCompany(String id) async {
   try {
     final pb = PocketBase(API_URL);

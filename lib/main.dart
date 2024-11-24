@@ -49,6 +49,13 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.black,
           elevation: 0,
         ),
+        // fontFamily: 'Roboto', // 기본 폰트 설정
+        // textTheme: const TextTheme(
+        //   bodyMedium: TextStyle(fontSize: 16.0, fontFamily: 'Subak'),
+        //   bodyLarge: TextStyle(fontSize: 14.0, fontFamily: 'Subak'),
+        //   headlineLarge: TextStyle(fontSize: 24.0, fontFamily: 'Subak'),
+        //   headlineMedium: TextStyle(fontSize: 22.0, fontFamily: 'Subak'),
+        // ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.blue),

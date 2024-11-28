@@ -457,10 +457,10 @@ packages:
     dependency: transitive
     description:
       name: in_app_purchase_storekit
-      sha256: a1017ad19ee23fdbabc4ce0c03041c30a3118bcf65e0a4ddd7da2c6d440e51d9
+      sha256: "250b3865da1f4abf0d0e1eda9556734ee22ab5ebfe47a59227d8d9aeaa1c03e8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.20"
+    version: "0.3.20+2"
   intl:
     dependency: "direct main"
     description:

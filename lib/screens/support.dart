@@ -108,11 +108,16 @@ class _SupportScreenState extends State<SupportScreen> {
         Expanded(
           flex: 1,
           child: Container(
-            padding: const EdgeInsets.all(10.0),
-            color: Colors.grey[200],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: renderButtonArea(),
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: loadAd,
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(
+                  250,
+                  50,
+                ), // Adjust the width and height as needed
+              ),
+              child: Text('viewAD'.tr),
             ),
           ),
         ),
@@ -120,30 +125,8 @@ class _SupportScreenState extends State<SupportScreen> {
     );
   }
 
-  List<Widget> renderButtonArea() {
-    if (Platform.isIOS) {
-      return [
-        ElevatedButton(
-          onPressed: loadAd,
-          child: Text('viewAD'.tr),
-        ),
-      ];
-    }
-
-    return [
-      ElevatedButton(
-        onPressed: loadAd,
-        child: Text('viewAD'.tr),
-      ),
-      ElevatedButton(
-        onPressed: () => _buyProduct(0),
-        child: Text('donate'.tr),
-      ),
-    ];
-  }
-
   Widget _renderLoadingOverlap() {
-    if (!adManager.isAdReady.value || !_purchaseManager.isProcessing.value) return const SizedBox.shrink();
+    if (!adManager.isAdReady.value) return const SizedBox.shrink();
     return const OrverlapLoading();
   }
 

@@ -29,6 +29,8 @@ void main() async {
 }
 
 // TODO ::: 명예의 전당 추가
+// TODO ::: 전국 회사 데이터 착아서 밀어넣기
+// TODO ::: 회사 구글맵 정보가 존재 하지 않을경우 버튼 비활성화
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

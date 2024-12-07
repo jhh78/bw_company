@@ -7,7 +7,6 @@ import 'package:flutter_application_1/screens/search.dart';
 import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/utils/constants.dart';
-import 'package:flutter_application_1/utils/util.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_application_1/widgets/register/search_tag_input_field.dart';
 import 'package:get/get.dart';
@@ -25,8 +24,6 @@ class _CorporateRegisterState extends State<CorporateRegister> {
   final SystemsProvider systemsProvider = Get.put(SystemsProvider());
 
   final TextEditingController _companyNameController = TextEditingController(text: Get.arguments['keyword']);
-  final TextEditingController _companyHomepageController = TextEditingController();
-  final TextEditingController _companyLocationController = TextEditingController();
 
   final Company company = Company();
 
@@ -72,14 +69,6 @@ class _CorporateRegisterState extends State<CorporateRegister> {
         systemsProvider.formValidate['duplicate'] = true;
       }
 
-      if (_companyHomepageController.text.isEmpty || !isValidUrl(_companyHomepageController.text)) {
-        systemsProvider.formValidate['companyHomepage'] = true;
-      }
-
-      if (_companyLocationController.text.isEmpty || !isValidGoogleMapUrl(_companyLocationController.text)) {
-        systemsProvider.formValidate['companyLocation'] = true;
-      }
-
       if (systemsProvider.formValidate.isNotEmpty) {
         CustomSnackbar(
           title: 'errorText'.tr,
@@ -91,8 +80,6 @@ class _CorporateRegisterState extends State<CorporateRegister> {
       }
 
       company.name = _companyNameController.text;
-      company.homepage = _companyHomepageController.text;
-      company.location = _companyLocationController.text;
       await registerCompany(company);
       Get.offAll(() => const SearchScreen());
     } catch (e) {
@@ -138,22 +125,6 @@ class _CorporateRegisterState extends State<CorporateRegister> {
                     _companyNameController,
                     helperText: "registerCompanyScreenNeedCompanyName".tr,
                   )),
-              Obx(() => renderTextField(
-                    context,
-                    "registerCompanyScreenNeedCompanyHomePage".tr,
-                    systemsProvider.formValidate["companyHomepage"] == true ? "requiredField".tr : null,
-                    _companyHomepageController,
-                    helperText: "registerCompanyScreenNeedCompanyHomePageHelpText".tr,
-                  )),
-              Obx(
-                () => renderTextField(
-                  context,
-                  "registerCompanyScreenNeedCompanyLocation".tr,
-                  systemsProvider.formValidate["companyLocation"] == true ? "requiredField".tr : null,
-                  _companyLocationController,
-                  helperText: "registerCompanyScreenNeedCompanyLocationHelpText".tr,
-                ),
-              ),
               SearchTagInputField(tags: "", onTagChange: _changeTagList),
               const SizedBox(height: 20),
               ElevatedButton(

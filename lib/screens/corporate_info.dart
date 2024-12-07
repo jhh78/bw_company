@@ -24,15 +24,17 @@ class CorporateInfoScreen extends StatelessWidget {
     companyInfoProvider.getInitItems(company.id);
   }
 
-  void openBrowser(String address) async {
+  void openBrowser(String companyName) async {
     try {
-      final url = Uri.parse(address);
-      await launchUrl(url);
+      final url = Uri.parse("https://www.google.com/search?q=$companyName");
+      if (!await launchUrl(url)) {
+        throw Exception("wrongRegisteredInformation".tr);
+      }
     } catch (e) {
       writeLogs(location, e.toString());
       CustomSnackbar(
         title: "errorText".tr,
-        message: "wrongLocationInformation".tr,
+        message: "wrongRegisteredInformation".tr,
         status: ObserveSnackbarStatus.ERROR,
       ).showSnackbar();
     }
@@ -144,17 +146,11 @@ class CorporateInfoScreen extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () => openBrowser(company.homepage.toString()),
+                  onPressed: () {
+                    openBrowser(company.name);
+                  },
                   icon: const Icon(
-                    Icons.home_outlined,
-                    size: 32,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () => openBrowser(company.location.toString()),
-                  icon: const Icon(
-                    Icons.location_on_outlined,
+                    Icons.map_outlined,
                     size: 32,
                     color: Colors.blueAccent,
                   ),

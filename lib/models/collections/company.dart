@@ -4,8 +4,6 @@ class Company {
   String id;
   String refUser;
   String name;
-  String? homepage;
-  String? location;
   int thumbUp;
   int thumbDown;
   String? tags;
@@ -16,8 +14,6 @@ class Company {
     this.id = '',
     this.refUser = '',
     this.name = '',
-    this.homepage,
-    this.location,
     this.thumbUp = 0,
     this.thumbDown = 0,
     this.tags = '',
@@ -29,8 +25,6 @@ class Company {
     return Company(
       id: record.id,
       name: record.data['name'],
-      homepage: record.data['homepage'],
-      location: record.data['location'],
       thumbUp: record.data['thumbUp'] ?? 0,
       thumbDown: record.data['thumbDown'] ?? 0,
       tags: record.data['tags'],
@@ -43,8 +37,6 @@ class Company {
     return Company(
       id: json['id'],
       name: json['name'],
-      homepage: json['homepage'],
-      location: json['location'],
       thumbUp: json['thumbUp'] ?? 0,
       thumbDown: json['thumbDown'] ?? 0,
       tags: json['tags'],
@@ -58,8 +50,6 @@ class Company {
       'id': id,
       'refUser': refUser,
       'name': name,
-      'homepage': homepage,
-      'location': location,
       'thumbUp': thumbUp,
       'thumbDown': thumbDown,
       'tags': tags,

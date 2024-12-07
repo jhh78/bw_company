@@ -79,6 +79,7 @@ class Languages extends Translations {
           'registeredItems': '이미 등록된 항목입니다.',
           'adLoadFailed': '광고 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
           'productLoadFailed': '상품 로드에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
+          'wrongRegisteredInformation': '등록된 정보에 문제가 있습니다.',
         },
         'ja_JP': {
           'pleaseTouchScreenAndStart': '画面をタッチして開始してください',
@@ -156,6 +157,7 @@ class Languages extends Translations {
           'registeredItems': 'すでに登録されたアイテムです。',
           'adLoadFailed': '広告のロードに失敗しました。\nしばらくしてから再度お試しください。',
           'productLoadFailed': '商品のロードに失敗しました。\nしばらくしてから再度お試しください。',
+          'wrongRegisteredInformation': '登録された情報に問題があります。',
         },
         'en_US': {
           'pleaseTouchScreenAndStart': 'Touch the screen to start',
@@ -233,6 +235,7 @@ class Languages extends Translations {
           'registeredItems': 'This item is already registered.',
           'adLoadFailed': 'Failed to load ad.\nPlease try again later.',
           'productLoadFailed': 'Failed to load product.\nPlease try again later.',
+          'wrongRegisteredInformation': 'There is a problem with the registered information.',
         },
       };
 }

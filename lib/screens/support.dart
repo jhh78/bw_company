@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
@@ -54,18 +52,6 @@ class _SupportScreenState extends State<SupportScreen> {
   void dispose() {
     _purchaseManager.dispose();
     super.dispose();
-  }
-
-  _buyProduct(int productIndex) async {
-    try {
-      await _purchaseManager.buyProduct(productIndex);
-    } catch (e) {
-      CustomSnackbar(
-        title: "errorText".tr,
-        message: "productLoadFailed".tr,
-        status: ObserveSnackbarStatus.ERROR,
-      ).showSnackbar();
-    }
   }
 
   void loadAd() async {

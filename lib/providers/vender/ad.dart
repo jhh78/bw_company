@@ -11,7 +11,6 @@ const String location = "lib/services/ad_manager.dart";
 
 class ADManager extends GetxService {
   RxBool isAdReady = false.obs;
-  // TODO ::: 에드몹에서 인식되기 전까지 테스트 광고 설정
   String _getADUnitId() {
     if (Platform.isAndroid) {
       return "ca-app-pub-3940256099942544/5224354917";

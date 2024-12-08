@@ -12,9 +12,17 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
+// TODO ::: 해야될것들
+// TODO ::: 명예의 전당 추가
+// TODO ::: 디자인 개선
+// TODO ::: 안드로이드 심사 통과하면 애드몹 실광고 아이디 넣기
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Upgrader.clearSavedSettings();
+  if (kDebugMode) {
+    await Upgrader.clearSavedSettings();
+  }
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
   MobileAds.instance.initialize();
@@ -28,14 +36,9 @@ void main() async {
   runApp(const MyApp());
 }
 
-// TODO ::: 명예의 전당 추가
-// TODO ::: 전국 회사 데이터 착아서 밀어넣기
-// TODO ::: 회사 구글맵 정보가 존재 하지 않을경우 버튼 비활성화
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -76,6 +79,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: UpgradeAlert(
+        upgrader: Upgrader(debugLogging: kDebugMode),
+        barrierDismissible: false,
+        showIgnore: false,
+        showLater: false,
         child: const IntroScreen(),
       ),
     );

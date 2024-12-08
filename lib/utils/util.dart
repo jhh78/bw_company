@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_application_1/utils/constants.dart';
 import 'package:intl/intl.dart';
 
 // 릴리즈 모드일 경우 실제 광고 단위 ID를 반환하고, 디버그 모드일 경우 테스트 광고 단위 ID를 반환
@@ -25,9 +24,3 @@ String getNemberFormatString(int number) {
 Future<void> delayScreen() async {
   if (kDebugMode) await Future.delayed(const Duration(seconds: 1));
 }
-
-// URL 유효성 검사 함수
-bool isValidUrl(String url) => RegExp(URL_PATTERN).hasMatch(url);
-
-// 구글 지도 URL 유효성 검사 함수
-bool isValidGoogleMapUrl(String url) => RegExp(URL_PATTERN).hasMatch(url);

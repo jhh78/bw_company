@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/exception.dart';
 import 'package:flutter_application_1/services/notice.dart';
 import 'package:flutter_application_1/providers/vender/ad.dart';
-import 'package:flutter_application_1/providers/vender/purchase.dart';
 import 'package:flutter_application_1/utils/constants.dart';
 import 'package:flutter_application_1/widgets/common/custom_snackbar.dart';
 import 'package:flutter_application_1/widgets/common/orverlap_loading.dart';
@@ -21,7 +20,6 @@ class SupportScreen extends StatefulWidget {
 class _SupportScreenState extends State<SupportScreen> {
   bool _isReady = false;
   String _text = "";
-  final PurchaseManager _purchaseManager = Get.put(PurchaseManager());
   final ADManager adManager = Get.put(ADManager());
 
   void _getNoticeData() async {
@@ -50,7 +48,6 @@ class _SupportScreenState extends State<SupportScreen> {
 
   @override
   void dispose() {
-    _purchaseManager.dispose();
     super.dispose();
   }
 

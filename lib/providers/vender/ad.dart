@@ -13,8 +13,7 @@ class ADManager extends GetxService {
   RxBool isAdReady = false.obs;
   String _getADUnitId() {
     if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544/5224354917";
-      // return kReleaseMode ? "ca-app-pub-9674517651101637/4032962043" : "ca-app-pub-3940256099942544/5224354917";
+      return kReleaseMode ? "ca-app-pub-9674517651101637/4032962043" : "ca-app-pub-3940256099942544/5224354917";
     } else if (Platform.isIOS) {
       return kReleaseMode ? "ca-app-pub-9674517651101637/5809078146" : "ca-app-pub-3940256099942544/1712485313";
     }

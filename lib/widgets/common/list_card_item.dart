@@ -73,7 +73,7 @@ class _ListCardItemState extends State<ListCardItem> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withAlpha(50),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 3),

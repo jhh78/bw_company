@@ -12,10 +12,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:upgrader/upgrader.dart';
 
-// TODO ::: 해야될것들
 // TODO ::: 명예의 전당 추가
 // TODO ::: 디자인 개선
-// TODO ::: 안드로이드 심사 통과하면 애드몹 실광고 아이디 넣기
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

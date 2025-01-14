@@ -47,31 +47,6 @@ class CorporateInfoScreen extends StatelessWidget {
       );
     }
 
-    if (companyInfoProvider.comments.isEmpty) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              "dataNotFound".tr,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.black,
-                  ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.to(
-                () => CommentRegister(company: company),
-                transition: Transition.downToUp,
-              );
-            },
-            child: Text("registerButton".tr),
-          ),
-        ],
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

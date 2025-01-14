@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:get/get.dart';
@@ -62,13 +64,14 @@ class CorporateBarChart extends StatelessWidget {
     return ListView.builder(
       itemCount: values.length,
       itemBuilder: (context, index) {
+        log('${values[index] == 0} ${values[index] / maxValue} ${values[index]} maxValue: $maxValue');
         return Row(
           children: [
             Expanded(
               child: Stack(
                 children: [
                   LinearProgressIndicator(
-                    value: values[index] / maxValue,
+                    value: values[index] == 0 ? 1 : values[index] / maxValue,
                     backgroundColor: Colors.grey[300],
                     color: getColorForValue(values[index]),
                     minHeight: 22,

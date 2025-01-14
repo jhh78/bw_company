@@ -5,6 +5,7 @@ import 'package:flutter_application_1/models/collections/users.dart';
 import 'package:flutter_application_1/models/localdata.dart';
 import 'package:flutter_application_1/providers/company_info.dart';
 import 'package:flutter_application_1/screens/comment_detail.dart';
+import 'package:flutter_application_1/screens/comment_register.dart';
 import 'package:flutter_application_1/services/company.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/utils/constants.dart';
@@ -69,6 +70,32 @@ class _CorporateCommentsState extends State<CorporateComments> {
         child: CircularProgressIndicator(),
       );
     }
+
+    if (companyInfoProvider.comments.isEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text(
+              "dataNotFound".tr,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.black,
+                  ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Get.to(
+                () => CommentRegister(company: widget.company),
+                transition: Transition.downToUp,
+              );
+            },
+            child: Text("registerButton".tr),
+          ),
+        ],
+      );
+    }
+
     return ListView.builder(
       controller: _scrollController,
       itemCount: companyInfoProvider.comments.length,

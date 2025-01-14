@@ -12,11 +12,11 @@ class CompanyRating {
   CompanyRating({
     this.id = '',
     this.refCompany = '',
-    this.careerRating = 3.0,
-    this.workingEnvironmentRating = 3.0,
-    this.salaryWelfareRating = 3.0,
-    this.corporateCultureRating = 3.0,
-    this.managementRating = 3.0,
+    this.careerRating = 0,
+    this.workingEnvironmentRating = 0,
+    this.salaryWelfareRating = 0,
+    this.corporateCultureRating = 0,
+    this.managementRating = 0,
   });
 
   factory CompanyRating.fromMap(RecordModel record) {
